@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { ObjectId } from "mongoose";
 
 declare interface IUserDocument {
@@ -10,4 +11,12 @@ declare interface IUserDocument {
   password: string;
   tokens: string[];
   verified: boolean;
+}
+
+declare interface ICreatedUser extends Request {
+  body: {
+    email: string;
+    name: string;
+    password: string;
+  };
 }
