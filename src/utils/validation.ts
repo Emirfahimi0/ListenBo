@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const CreateUserValidator = yup.object().shape({
+export const createUserSchema = yup.object().shape({
   name: yup
     .string()
     .trim()
