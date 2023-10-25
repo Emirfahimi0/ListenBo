@@ -5,7 +5,7 @@ import * as yup from "yup";
 export const validatorAuth = (schema: any): RequestHandler => {
   return async (req, res, next) => {
     if (isEmpty(req.body))
-      return res.json({ error: "Empty body is not excepted" });
+      return res.status(422).json({ error: "Empty body is not excepted" });
 
     const schema_Validate = yup.object({
       body: schema,
@@ -23,7 +23,7 @@ export const validatorAuth = (schema: any): RequestHandler => {
       next();
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        res.json({ error: error.message });
+        res.status(422).json({ error: error.message });
       }
     }
   };
