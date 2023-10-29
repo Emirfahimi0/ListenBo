@@ -1,8 +1,16 @@
 import { Router } from "express";
-import { createUserSchema } from "../utils/validation";
+import {
+  createUserValidation,
+  emailTokenVerification,
+} from "../utils/validation";
 import { validatorAuth } from "../middleware/validator";
-import { createUser } from "../controller";
+import { createUser, verifyEmail } from "../controller";
 
 export const authRouter = Router();
 
-authRouter.post("/create", validatorAuth(createUserSchema), createUser);
+authRouter.post("/create", validatorAuth(createUserValidation), createUser);
+authRouter.post(
+  "/verify-email",
+  validatorAuth(emailTokenVerification),
+  verifyEmail
+);

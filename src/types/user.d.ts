@@ -21,8 +21,19 @@ declare global {
       password: string;
     };
   }
+
+  interface IVerifyEmail extends Request {
+    body: {
+      token: string;
+      userId: string;
+    };
+  }
   interface ITokenMethods {
-    compareToken: (token: string) => Promise<boolean>;
+    compareToken(token: string): Promise<boolean>;
+  }
+
+  interface IPasswordMethods {
+    comparePassword(password: string): Promise<boolean>;
   }
 
   interface IEmailOptions {

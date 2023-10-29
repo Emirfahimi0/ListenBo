@@ -1,16 +1,9 @@
 import { RequestHandler } from "express";
-import { userModel } from "../models";
-import {
-  GMAIL_APP_USE,
-  GMAIL_USER,
-  MAIL_TRAP_PASS,
-  MAIL_TRAP_SENDER,
-  MAIL_TRAP_USER,
-  generateToken,
-} from "../utils";
+import { MAIL_TRAP_SENDER, generateToken, handleEmailSender } from "../utils";
 import { generateEmail, generateEmailTemplate } from "../mail/template";
 import { ENGLISH } from "../constant";
 import path from "path";
+import { emailTokenModel, userModel } from "../models";
 
 const { MAIL } = ENGLISH;
 
@@ -22,30 +15,31 @@ export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
   const createdUser = await userModel.create({ name, email, password });
 
   const token = generateToken();
-
-  const tokenTemplate: IEmailOptions = {
-    title: MAIL.TITLE,
-    message: MAIL.WELCOME,
-    requestMessage: MAIL.DIDNT_REQUEST_TOKEN,
-    label: MAIL.VERIFICATION_RECEIVED,
-    banner: path.join(__dirname, "../mails/images/animated_header.gif"),
-    logo: "cid:logo",
-    link: "#",
-    buttonTitle: token,
-  };
-  const nodeMailer = generateEmail();
-  nodeMailer.sendMail({
-    to: createdUser.email,
-    from: MAIL_TRAP_SENDER,
-    html: generateEmailTemplate(tokenTemplate),
-    attachments: [
-      {
-        filename: "logo.png",
-        path: path.join(__dirname, "../mail/images/logo.png"),
-        cid: "logo",
-      },
-    ],
+  await handleEmailSender(token, emailTokenModel, {
+    name,
+    email,
+    userId: createdUser._id.toString(),
   });
 
   return res.status(201).json({ newUser: createdUser });
+};
+
+export const verifyEmail: RequestHandler = async (req: IVerifyEmail, res) => {
+  const { token, userId } = req.body;
+
+  const verificationToken = await emailTokenModel.findOne({ owner: userId });
+
+  if (verificationToken === null)
+    return res.status(403).json({
+      error: "Invalid email verification!",
+    });
+
+  const isVerified = await verificationToken.compareToken(token);
+  if (!isVerified)
+    return res.status(403).json({ error: "Invalid. Token does not match!" });
+
+  await userModel.findByIdAndUpdate(userId, { verified: true });
+  await emailTokenModel.findByIdAndDelete(verificationToken._id);
+
+  res.json({ success: "Your email is verified!" });
 };
