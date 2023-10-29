@@ -5,8 +5,6 @@ export const generateEmail = () => {
   const transport = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
-    logger: true,
-    debug: true,
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_APP_USE,
