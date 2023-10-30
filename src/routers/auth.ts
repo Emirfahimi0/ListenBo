@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createUserValidation,
   emailTokenVerification,
+  updatePasswordValidation,
 } from "../utils/validation";
 import { validatorAuth } from "../middleware/validator";
 import {
@@ -9,6 +10,7 @@ import {
   generatePassword,
   grantAccessValid,
   reVerifyEmail,
+  updatePassword,
   verifyEmail,
 } from "../controller";
 import { verifyPassword } from "../middleware/auth";
@@ -28,4 +30,10 @@ authRouter.post(
   validatorAuth(emailTokenVerification),
   verifyPassword,
   grantAccessValid
+);
+authRouter.post(
+  "/update-password",
+  validatorAuth(updatePasswordValidation),
+  verifyPassword,
+  updatePassword
 );

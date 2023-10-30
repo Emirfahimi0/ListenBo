@@ -1,7 +1,5 @@
 import path from "path";
 import { CHARACTER } from "../constant";
-import { ENGLISH } from "../constant";
-import { Model } from "mongoose";
 import { generateEmail, generateEmailTemplate } from "../mail/template";
 import { MAIL_TRAP_SENDER } from "./variables";
 
@@ -24,13 +22,15 @@ interface IProfile {
 
 export const handleEmailSender = async (
   createdUser: IProfile,
-  emailTemplate: IEmailOptions
+  emailTemplate: IEmailOptions,
+  subject: string
 ) => {
   const { email, name, link } = createdUser;
 
   const nodeMailer = generateEmail();
   nodeMailer.sendMail({
     to: email,
+    subject: "",
     from: MAIL_TRAP_SENDER,
     html: generateEmailTemplate(emailTemplate),
     attachments: [

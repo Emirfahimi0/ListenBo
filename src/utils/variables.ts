@@ -12,4 +12,5 @@ export const {
   GMAIL_APP_USE,
   GMAIL_USER,
   PASSWORD_RESET_URL,
+  SIGN_IN_URL,
 } = ENV;
