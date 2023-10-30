@@ -46,7 +46,7 @@ declare global {
     requestMessage: string;
     title: string;
   }
-  interface IEmailVerifiedToken {
+  interface IVerifiedToken {
     createdAt: Date;
     owner: ObjectId;
     token: string;

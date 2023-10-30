@@ -1,7 +1,7 @@
 import { compare, hash } from "bcrypt";
 import { Model, Schema, model } from "mongoose";
 
-const emailVerifiedTokenSchema = new Schema<IVerifiedToken, {}, ITokenMethods>({
+const passwordResetTokenSchema = new Schema<IVerifiedToken, {}, ITokenMethods>({
   owner: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -19,19 +19,17 @@ const emailVerifiedTokenSchema = new Schema<IVerifiedToken, {}, ITokenMethods>({
   },
 });
 
-emailVerifiedTokenSchema.pre("save", async function (next) {
+passwordResetTokenSchema.pre("save", async function (next) {
   if (this.isModified("token")) {
     this.token = await hash(this.token, 10);
   }
   next();
 });
 
-emailVerifiedTokenSchema.methods.compareToken = async function (token) {
+passwordResetTokenSchema.methods.compareToken = async function (token) {
   const compareToken = await compare(token, this.token);
   return compareToken;
 };
 
-export const emailTokenModel: Model<IVerifiedToken, {}, ITokenMethods> = model(
-  "EmailVerifiedToken",
-  emailVerifiedTokenSchema
-);
+export const passwordTokenModel: Model<IVerifiedToken, {}, ITokenMethods> =
+  model("passwordResetToken", passwordResetTokenSchema);

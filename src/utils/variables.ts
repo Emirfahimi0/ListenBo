@@ -11,4 +11,5 @@ export const {
   MAIL_TRAP_SENDER,
   GMAIL_APP_USE,
   GMAIL_USER,
+  PASSWORD_RESET_URL,
 } = ENV;
