@@ -1,12 +1,17 @@
 import { RequestHandler } from "express";
-import { PASSWORD_RESET_URL, generateToken, handleEmailSender } from "../utils";
+import {
+  PASSWORD_RESET_URL,
+  SIGN_IN_URL,
+  generateToken,
+  handleEmailSender,
+} from "../utils";
 import { emailTokenModel, userModel } from "../models";
 import { isValidObjectId } from "mongoose";
 import { passwordTokenModel } from "../models/passwordReset";
 import crypto from "crypto";
 import { ENGLISH } from "../constant";
 import path from "path";
-const { MAIL, PASSWORD } = ENGLISH;
+const { MAIL, PASSWORD, UPDATE_PASSWORD } = ENGLISH;
 
 export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
   const { name, email, password } = req.body;
@@ -38,7 +43,8 @@ export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
       name,
       email,
     },
-    tokenTemplate
+    tokenTemplate,
+    MAIL.SUBJECT
   );
 
   return res.status(201).json({ newUser: createdUser });
@@ -91,7 +97,11 @@ export const reVerifyEmail: RequestHandler = async (req, res) => {
     buttonTitle: token,
   };
 
-  handleEmailSender({ name: user?.name, email: user?.email }, tokenTemplate);
+  handleEmailSender(
+    { name: user?.name, email: user?.email },
+    tokenTemplate,
+    MAIL.RE_VERIFY_EMAIL_SUBJECT
+  );
 
   res.json({ message: "Please check back your email" });
 };
@@ -130,7 +140,8 @@ export const generatePassword: RequestHandler = async (req, res) => {
     {
       email: result.email,
     },
-    forgetPasswordTemplate
+    forgetPasswordTemplate,
+    PASSWORD.PASSWORD_SUBJECT
   );
 
   res.json({ message: "check your registered email" });
@@ -138,4 +149,41 @@ export const generatePassword: RequestHandler = async (req, res) => {
 
 export const grantAccessValid: RequestHandler = (req, res) => {
   res.json({ valid: true });
+};
+
+export const updatePassword: RequestHandler = async (req, res) => {
+  const { password, userId } = req.body;
+
+  const user = await userModel.findById(userId);
+  if (user === null)
+    return res.status(403).json({ error: " unathorized access!" });
+  const isMatch = await user.comparePassword(password);
+  if (isMatch === true)
+    return res.status(422).json({
+      error: "The new password must be different from the old password!",
+    });
+  user.password = password;
+  await user.save();
+
+  await passwordTokenModel.findOneAndDelete({ owner: user._id });
+  const newMessage = `Dear ${user.name}.${UPDATE_PASSWORD.UPDATE_MESSAGE}`;
+  const forgetPasswordTemplate: IEmailOptions = {
+    title: UPDATE_PASSWORD.UPDATE_TITLE,
+    message: newMessage,
+    requestMessage: PASSWORD.DIDNT_REQUEST_PASSWORD,
+    label: UPDATE_PASSWORD.UPDATED_PASSWORD,
+    banner: path.join(__dirname, "../mails/images/animated_header.gif"),
+    logo: "cid:logo",
+    link: SIGN_IN_URL,
+    buttonTitle: UPDATE_PASSWORD.UPDATE_PASSWORD_SUCCESS,
+  };
+
+  await handleEmailSender(
+    {
+      email: user.email,
+    },
+    forgetPasswordTemplate,
+    UPDATE_PASSWORD.UPDATE_SUBJECT
+  );
+  res.json({ message: "Password reset successfully" });
 };
