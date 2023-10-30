@@ -38,7 +38,7 @@ declare global {
 
   interface IEmailOptions {
     banner: string;
-    buttonTitle: string;
+    buttonTitle?: string;
     label?: string;
     link: string;
     logo: string;
