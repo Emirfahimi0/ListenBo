@@ -24,6 +24,40 @@ export const createUserValidation = yup.object().shape({
     ),
 });
 
+export const emailTokenVerification = yup.object().shape({
+  token: yup.string().trim().required("Invalid token!"),
+  userId: yup
+    .string()
+    .transform(function (value) {
+      if (this.isType(value) && isValidObjectId(value)) {
+        return value;
+      }
+      return "";
+    })
+    .required("Invalid user Id"),
+});
+
+export const updatePasswordValidation = yup.object().shape({
+  token: yup.string().trim().required("Invalid token!"),
+  userId: yup
+    .string()
+    .transform(function (value) {
+      if (this.isType(value) && isValidObjectId(value)) {
+        return value;
+      }
+      return "";
+    })
+    .required("Invalid user Id"),
+  password: yup
+    .string()
+    .min(8, "Password is too short!")
+    .required("Password is missing!")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+});
+
 export const isArrayNotEmpty = (value: unknown[] | null | undefined) => {
   return value !== null && value !== undefined && value.length > 0;
 };
@@ -39,16 +73,3 @@ export const isEmpty = (
 ) => {
   return value === null || value === undefined;
 };
-
-export const emailTokenVerification = yup.object().shape({
-  token: yup.string().trim().required("Invalid token!"),
-  userId: yup
-    .string()
-    .transform(function (value) {
-      if (this.isType(value) && isValidObjectId(value)) {
-        return value;
-      }
-      return "";
-    })
-    .required("Invalid user Id"),
-});
