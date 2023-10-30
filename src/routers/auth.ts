@@ -4,7 +4,14 @@ import {
   emailTokenVerification,
 } from "../utils/validation";
 import { validatorAuth } from "../middleware/validator";
-import { createUser, verifyEmail } from "../controller";
+import {
+  createUser,
+  generatePassword,
+  grantAccessValid,
+  reVerifyEmail,
+  verifyEmail,
+} from "../controller";
+import { verifyPassword } from "../middleware/auth";
 
 export const authRouter = Router();
 
@@ -13,4 +20,12 @@ authRouter.post(
   "/verify-email",
   validatorAuth(emailTokenVerification),
   verifyEmail
+);
+authRouter.post("/re-verify-email", reVerifyEmail);
+authRouter.post("/forget-password", generatePassword);
+authRouter.post(
+  "/verify-password-token",
+  validatorAuth(emailTokenVerification),
+  verifyPassword,
+  grantAccessValid
 );
