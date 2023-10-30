@@ -4,7 +4,6 @@ import { ENGLISH } from "../constant";
 import { Model } from "mongoose";
 import { generateEmail, generateEmailTemplate } from "../mail/template";
 import { MAIL_TRAP_SENDER } from "./variables";
-const { MAIL } = ENGLISH;
 
 export const generateToken = (length = 6) => {
   let token = "";
@@ -19,37 +18,21 @@ export const generateToken = (length = 6) => {
 
 interface IProfile {
   email: string;
-  name: string;
-  userId: string;
+  name?: string;
+  link?: string;
 }
 
 export const handleEmailSender = async (
-  token: string,
-  emailTokenModel: Model<IEmailVerifiedToken, {}, ITokenMethods>,
-  createdUser: IProfile
+  createdUser: IProfile,
+  emailTemplate: IEmailOptions
 ) => {
-  const { email, userId, name } = createdUser;
-
-  const tokenTemplate: IEmailOptions = {
-    title: MAIL.TITLE,
-    message: MAIL.WELCOME,
-    requestMessage: MAIL.DIDNT_REQUEST_TOKEN,
-    label: MAIL.VERIFICATION_RECEIVED,
-    banner: path.join(__dirname, "../mails/images/animated_header.gif"),
-    logo: "cid:logo",
-    link: "#",
-    buttonTitle: token,
-  };
-  await emailTokenModel.create({
-    owner: userId,
-    token,
-  });
+  const { email, name, link } = createdUser;
 
   const nodeMailer = generateEmail();
   nodeMailer.sendMail({
     to: email,
     from: MAIL_TRAP_SENDER,
-    html: generateEmailTemplate(tokenTemplate),
+    html: generateEmailTemplate(emailTemplate),
     attachments: [
       {
         filename: "logo.png",
