@@ -10,5 +10,7 @@ export const ENGLISH = {
     FORGOT_PASSWORD_LABEL: "Lets get you a new one!",
     FORGOT_TITLE: "Forgot your password?",
     DIDNT_REQUEST_PASSWORD: "Didnt request a password reset?",
+    PASSWORD_MESSAGE:
+      "We just received a request to reset your password. Please use the link below to reset your password",
   },
 };
