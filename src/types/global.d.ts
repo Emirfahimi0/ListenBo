@@ -13,7 +13,20 @@ declare global {
     tokens: string[];
     verified: boolean;
   }
-
+  interface IProfileReq {
+    id: Types.ObjectId;
+    name: string;
+    email: string;
+    verified: boolean;
+    avatar: string | undefined;
+    followers: number;
+    following: number;
+  }
+  namespace Express {
+    interface Request {
+      user: IProfileReq;
+    }
+  }
   interface ICreatedUser extends Request {
     body: {
       email: string;
