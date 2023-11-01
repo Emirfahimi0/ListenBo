@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createUserValidation,
   emailTokenVerification,
+  signInValidation,
   updatePasswordValidation,
 } from "../utils/validation";
 import { validatorAuth } from "../middleware/validator";
@@ -9,11 +10,13 @@ import {
   createUser,
   generatePassword,
   grantAccessValid,
+  grantedAuth,
   reVerifyEmail,
+  signIn,
   updatePassword,
   verifyEmail,
 } from "../controller";
-import { verifyPassword } from "../middleware/auth";
+import { verifyAuth, verifyPassword } from "../middleware/auth";
 
 export const authRouter = Router();
 
@@ -37,3 +40,5 @@ authRouter.post(
   verifyPassword,
   updatePassword
 );
+authRouter.post("/sign-in", validatorAuth(signInValidation), signIn);
+authRouter.get("/authorized", verifyAuth, grantedAuth);
