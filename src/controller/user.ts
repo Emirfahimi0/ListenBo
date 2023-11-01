@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import {
+  JWT_SECRET_KEY,
   PASSWORD_RESET_URL,
   SIGN_IN_URL,
   generateToken,
@@ -11,6 +12,7 @@ import { passwordTokenModel } from "../models/passwordReset";
 import crypto from "crypto";
 import { ENGLISH } from "../constant";
 import path from "path";
+import jwt from "jsonwebtoken";
 const { MAIL, PASSWORD, UPDATE_PASSWORD } = ENGLISH;
 
 export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
@@ -158,7 +160,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
   if (user === null)
     return res.status(403).json({ error: " unathorized access!" });
   const isMatch = await user.comparePassword(password);
-  if (isMatch === true)
+  if (isMatch === false)
     return res.status(422).json({
       error: "The new password must be different from the old password!",
     });
@@ -166,7 +168,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
   await user.save();
 
   await passwordTokenModel.findOneAndDelete({ owner: user._id });
-  const newMessage = `Dear ${user.name}.${UPDATE_PASSWORD.UPDATE_MESSAGE}`;
+  const newMessage = `Dear ${user.name}. ${UPDATE_PASSWORD.UPDATE_MESSAGE}`;
   const forgetPasswordTemplate: IEmailOptions = {
     title: UPDATE_PASSWORD.UPDATE_TITLE,
     message: newMessage,
@@ -186,4 +188,42 @@ export const updatePassword: RequestHandler = async (req, res) => {
     UPDATE_PASSWORD.UPDATE_SUBJECT
   );
   res.json({ message: "Password reset successfully" });
+};
+
+export const signIn: RequestHandler = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email });
+
+  if (user === null)
+    return res.status(403).json({ error: "Email or password mismatch!" });
+
+  const isMatch = await user.comparePassword(password);
+
+  if (isMatch === false)
+    return res.status(403).json({ error: "Password is not match!" });
+
+  const jwtToken = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {});
+  user.tokens.push(jwtToken);
+
+  await user.save();
+
+  res.json({
+    profile: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      verified: user.verified,
+      avatar: user.avatarFile?.url,
+      followers: user.followers.length,
+      following: user.followings.length,
+    },
+    jwtToken,
+  });
+};
+
+export const grantedAuth: RequestHandler = (req, res) => {
+  res.json({
+    profile: req.user,
+  });
 };
