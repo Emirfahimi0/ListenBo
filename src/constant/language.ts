@@ -24,4 +24,17 @@ export const ENGLISH = {
     UPDATE_SUBJECT: "Password Reset Successfully!",
     UPDATE_PASSWORD_SUCCESS: "Sign In",
   },
+  VALIDATION: {
+    NAME_MISSING: "Name is missing!",
+    NAME_SHORT: "Name is short!",
+    NAME_LONG: "Name is too long!",
+    EMAIL_ADDRESS_MISSING: "Email address is missing!",
+    EMAIL_INVALID: "Email address is invalid!",
+    PASSWORD_MISSING: "Password is missing!",
+    PASSWORD_SHORT: "Password is short!",
+    PASSWORD_MATCHES:
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
+    INVALID_TOKEN: "Invalid token!",
+    INVALID_USER_ID: "User ID is invalid!",
+  },
 };
