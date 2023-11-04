@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import * as yup from "yup";
-import { ENGLISH, PASSREGEX } from "../constant";
+import { CATEGORIES, ENGLISH, PASSREGEX } from "../constant";
 
 const { VALIDATION } = ENGLISH;
 export const createUserValidation = yup.object().shape({
@@ -60,6 +60,15 @@ export const signInValidation = yup.object().shape({
     .required(VALIDATION.EMAIL_ADDRESS_MISSING)
     .email(VALIDATION.EMAIL_INVALID),
   password: yup.string().trim().required(VALIDATION.PASSWORD_MISSING),
+});
+
+export const audioValidation = yup.object().shape({
+  title: yup.string().trim().required(VALIDATION.TITLE_MISSING),
+  about: yup.string().trim().required(VALIDATION.ABOUT_MISSING),
+  category: yup
+    .string()
+    .oneOf(CATEGORIES, VALIDATION.INVALID_CATEGORIES)
+    .required(VALIDATION.CATEGORY_MISSING),
 });
 
 export const isArrayNotEmpty = (value: unknown[] | null | undefined) => {

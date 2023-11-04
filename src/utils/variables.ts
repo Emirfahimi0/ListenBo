@@ -5,6 +5,9 @@ const { env: ENV } = process as { env: { [key: string]: string } };
 // export const MAIL_TRAP_PASSWORD = ENV.MAIL_TRAP_USER as string;
 
 export const {
+  CLOUD_API_KEY,
+  CLOUD_NAME,
+  CLOUD_SECRET_KEY,
   GMAIL_APP_USE,
   GMAIL_USER,
   JWT_SECRET_KEY,
@@ -14,7 +17,4 @@ export const {
   MONGO_URI,
   PASSWORD_RESET_URL,
   SIGN_IN_URL,
-  CLOUD_NAME,
-  CLOUD_SECRET_KEY,
-  CLOUD_API_KEY,
 } = ENV;
