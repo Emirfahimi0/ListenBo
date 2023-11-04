@@ -36,5 +36,9 @@ export const ENGLISH = {
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
     INVALID_TOKEN: "Invalid token!",
     INVALID_USER_ID: "User ID is invalid!",
+    TITLE_MISSING: "Title is missing!",
+    ABOUT_MISSING: "About is missing!",
+    CATEGORY_MISSING: "Category is missing!",
+    INVALID_CATEGORIES: "Invalid categories!",
   },
 };
