@@ -42,3 +42,15 @@ export const handleEmailSender = async (
     ],
   });
 };
+
+export const formatProfile = (user: IUserDocument) => {
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    verified: user.verified,
+    avatar: user.avatarFile?.url,
+    followers: user.followers.length,
+    following: user.followings.length,
+  };
+};
