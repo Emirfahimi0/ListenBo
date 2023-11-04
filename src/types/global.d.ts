@@ -1,8 +1,10 @@
 import { Request } from "express";
 import { ObjectId } from "mongoose";
+import { File } from "formidable";
 
 declare global {
   interface IUserDocument {
+    _id: ObjectId;
     avatarFile?: { url: string; publicId: string };
     email: string;
     favourites: ObjectId[];
@@ -25,6 +27,7 @@ declare global {
   namespace Express {
     interface Request {
       user: IProfileReq;
+      token: string;
     }
   }
   interface ICreatedUser extends Request {
@@ -63,5 +66,9 @@ declare global {
     createdAt: Date;
     owner: ObjectId;
     token: string;
+  }
+
+  interface IReqWithFiles extends Request {
+    files?: { [key: string]: File };
   }
 }
