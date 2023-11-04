@@ -3,6 +3,7 @@ import {
   JWT_SECRET_KEY,
   PASSWORD_RESET_URL,
   SIGN_IN_URL,
+  formatProfile,
   generateToken,
   handleEmailSender,
 } from "../utils";
@@ -13,6 +14,8 @@ import crypto from "crypto";
 import { ENGLISH } from "../constant";
 import path from "path";
 import jwt from "jsonwebtoken";
+import formidable from "formidable";
+import cloudinary from "../cloud";
 const { MAIL, PASSWORD, UPDATE_PASSWORD } = ENGLISH;
 
 export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
@@ -222,8 +225,64 @@ export const signIn: RequestHandler = async (req, res) => {
   });
 };
 
-export const grantedAuth: RequestHandler = (req, res) => {
+export const sendProfile: RequestHandler = (req, res) => {
   res.json({
     profile: req.user,
   });
+};
+
+export const updateProfile: RequestHandler = async (
+  req: IReqWithFiles,
+  res
+) => {
+  const { name } = req.body;
+  const avatar = req.files?.avatar as formidable.File;
+
+  const user = await userModel.findById(req.user.id);
+  if (user === null) throw new Error("User not found, something went wrong");
+
+  if (typeof name !== "string")
+    return res.status(422).json({ error: "Invalid profile name" });
+
+  if (name.trim().length < 3)
+    return res
+      .status(422)
+      .json({ error: "Invalid profile name, name is too short" });
+
+  user.name = name;
+
+  if (avatar) {
+    if (user.avatarFile?.publicId !== undefined) {
+      await cloudinary.uploader.destroy(user.avatarFile.publicId);
+    }
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+      avatar.filepath,
+      {
+        width: 300,
+        height: 300,
+        crop: "thumb",
+        gravity: "face",
+      }
+    );
+    user.avatarFile = { url: secure_url, publicId: public_id };
+  }
+  await user.save();
+
+  res.json({ profile: formatProfile(user) });
+};
+
+export const logOut: RequestHandler = async (req, res) => {
+  const { fromAll } = req.query;
+
+  const token = req.token;
+
+  const user = await userModel.findById(req.user.id);
+
+  if (user === null) throw new Error("User not found, something went wrong");
+
+  if (fromAll === "yes") user.tokens = [];
+  else user.tokens = user.tokens.filter((eachToken) => eachToken !== token);
+
+  user.save();
+  res.json({ sucess: true });
 };
