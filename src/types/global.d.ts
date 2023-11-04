@@ -16,13 +16,13 @@ declare global {
     verified: boolean;
   }
   interface IProfileReq {
-    id: Types.ObjectId;
-    name: string;
-    email: string;
-    verified: boolean;
     avatar: string | undefined;
+    email: string;
     followers: number;
     following: number;
+    id: Types.ObjectId;
+    name: string;
+    verified: boolean;
   }
   namespace Express {
     interface Request {
@@ -70,5 +70,19 @@ declare global {
 
   interface IReqWithFiles extends Request {
     files?: { [key: string]: File };
+  }
+  interface IFileData {
+    publicId: string;
+    url: string;
+  }
+
+  interface IAudioDocument {
+    about: string;
+    file: IFileData;
+    likes: ObjectId[];
+    owner: ObjectId;
+    poster?: IFileData;
+    title: string;
+    category: TCategoriesPlaylist;
   }
 }
