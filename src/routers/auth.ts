@@ -7,16 +7,18 @@ import {
 } from "../utils/validation";
 import { validatorAuth } from "../middleware/validator";
 import {
+  updateProfile,
   createUser,
   generatePassword,
   grantAccessValid,
-  grantedAuth,
+  sendProfile,
   reVerifyEmail,
   signIn,
   updatePassword,
   verifyEmail,
+  logOut,
 } from "../controller";
-import { verifyAuth, verifyPassword } from "../middleware/auth";
+import { fileParser, verifyAuth, verifyPassword } from "../middleware/auth";
 
 export const authRouter = Router();
 
@@ -41,4 +43,6 @@ authRouter.post(
   updatePassword
 );
 authRouter.post("/sign-in", validatorAuth(signInValidation), signIn);
-authRouter.get("/authorized", verifyAuth, grantedAuth);
+authRouter.get("/authorized", verifyAuth, sendProfile);
+authRouter.post("/update-profile", verifyAuth, fileParser, updateProfile);
+authRouter.post("/log-out", verifyAuth, logOut);
