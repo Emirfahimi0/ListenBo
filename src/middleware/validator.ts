@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { isEmpty } from "../utils";
 import * as yup from "yup";
 
-export const validatorAuth = (schema: any): RequestHandler => {
+export const validator = (schema: any): RequestHandler => {
   return async (req, res, next) => {
     if (isEmpty(req.body))
       return res.status(422).json({ error: "Empty body is not excepted" });

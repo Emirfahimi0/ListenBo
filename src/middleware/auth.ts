@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { passwordTokenModel } from "../models/passwordReset";
+import { passwordTokenModel } from "../models";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { JWT_SECRET_KEY } from "../utils";
 import { userModel } from "../models";
@@ -74,4 +74,11 @@ export const fileParser: RequestHandler = async (
     checkReqFiles[key] = file![0];
   }
   next();
+};
+
+export const isVerified: RequestHandler = async (req, res, next) => {
+  const isVerified = req.user.verified;
+
+  if (isVerified === false)
+    return res.status(403).json({ error: "Please verify your email account!" });
 };
