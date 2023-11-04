@@ -7,9 +7,8 @@ import {
   generateToken,
   handleEmailSender,
 } from "../utils";
-import { emailTokenModel, userModel } from "../models";
+import { emailTokenModel, userModel, passwordTokenModel } from "../models";
 import { isValidObjectId } from "mongoose";
-import { passwordTokenModel } from "../models/passwordReset";
 import crypto from "crypto";
 import { ENGLISH } from "../constant";
 import path from "path";
