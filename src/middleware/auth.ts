@@ -56,23 +56,32 @@ export const fileParser: RequestHandler = async (
 ) => {
   if (req.headers["content-type"]?.startsWith("multipart/form-data") === false)
     return res.json({ error: "Not a multipart form data!" });
+  if (!req.headers["content-type"]?.startsWith("multipart/form-data;"))
+    return res.status(422).json({ error: "Only accepts form-data!" });
 
   const form = formidable({ multiples: false });
+
   const [fields, files] = await form.parse(req);
 
   for (let key in fields) {
     const field = fields[key];
-    if (field !== undefined) {
+    if (field) {
       req.body[key] = field[0];
     }
   }
 
-  const checkReqFiles = req.files !== undefined ? req.files : {};
-
   for (let key in files) {
     const file = files[key];
-    checkReqFiles[key] = file![0];
+
+    if (!req.files) {
+      req.files = {};
+    }
+
+    if (file) {
+      req.files[key] = file[0];
+    }
   }
+
   next();
 };
 
