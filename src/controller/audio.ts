@@ -34,7 +34,7 @@ export const createAudio: RequestHandler = async (
     owner: ownerId,
     file: { url: audioRes.url, publicId: audioRes.public_id },
   });
-  console.log(newAudio);
+
   if (poster !== undefined) {
     const posterRes = await cloudinary.uploader.upload(poster.filepath, {
       width: 300,
