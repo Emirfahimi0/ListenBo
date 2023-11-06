@@ -76,13 +76,19 @@ declare global {
     url: string;
   }
 
-  interface IAudioDocument {
+  interface IAudioDocument<T = ObjectId> {
+    _id: ObjectId;
     about: string;
+    category: TCategoriesPlaylist;
     file: IFileData;
     likes: ObjectId[];
-    owner: ObjectId;
+    owner: T;
     poster?: IFileData;
     title: string;
-    category: TCategoriesPlaylist;
+  }
+
+  interface IFavouriteDocument {
+    owner: ObjectId;
+    items: ObjectId[];
   }
 }

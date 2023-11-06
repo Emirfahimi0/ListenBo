@@ -8,3 +8,5 @@ type TCategoriesPlaylist =
   | "Science"
   | "Tech"
   | "Others";
+
+type TPopulateFavList = IAudioDocument<{ _id: ObjectId; name: string }>[];
