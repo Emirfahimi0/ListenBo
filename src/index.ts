@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import "./db";
-import { audioRouter, authRouter } from "./routers";
+import { audioRouter, authRouter, favouriteRouter } from "./routers";
 
 const app = express();
 
@@ -11,6 +11,8 @@ app.use(express.static("src/public"));
 
 app.use("/auth", authRouter);
 app.use("/audio", audioRouter);
+app.use("/favourite", favouriteRouter);
+
 const PORT = process.env.PORT || 8989;
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
