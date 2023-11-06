@@ -90,4 +90,5 @@ export const isVerified: RequestHandler = async (req, res, next) => {
 
   if (isVerified === false)
     return res.status(403).json({ error: "Please verify your email account!" });
+  next();
 };
