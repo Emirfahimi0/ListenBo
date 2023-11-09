@@ -1,17 +1,17 @@
-import { RequestHandler } from "express";
-import { ObjectId, isValidObjectId } from "mongoose";
-import { audioModel, favouriteModel } from "../models";
+import { RequestHandler } from 'express';
+import { ObjectId, isValidObjectId } from 'mongoose';
+import { audioModel, favouriteModel } from '../models';
 
 export const toggleFavorite: RequestHandler = async (req, res) => {
   const audioId = req.query.audioId as string;
-  let status: "added" | "removed";
+  let status: 'added' | 'removed';
 
   if (isValidObjectId(audioId) === false)
-    return res.status(422).json({ error: "Audio id is invalid!" });
+    return res.status(422).json({ error: 'Audio id is invalid!' });
 
   const audio = await audioModel.findById(audioId);
   if (audio === null)
-    return res.status(404).json({ error: "Resources not found!" });
+    return res.status(404).json({ error: 'Resources not found!' });
 
   const isExist = await favouriteModel.findOne({
     owner: req.user.id,
@@ -23,10 +23,10 @@ export const toggleFavorite: RequestHandler = async (req, res) => {
       { owner: req.user.id },
       {
         $pull: { items: audioId },
-      }
+      },
     );
 
-    status = "removed";
+    status = 'removed';
   } else {
     const favorite = await favouriteModel.findOne({ owner: req.user.id });
     if (favorite !== null) {
@@ -34,21 +34,21 @@ export const toggleFavorite: RequestHandler = async (req, res) => {
         { owner: req.user.id },
         {
           $addToSet: { items: audioId },
-        }
+        },
       );
     } else {
       await favouriteModel.create({ owner: req.user.id, items: [audioId] });
     }
 
-    status = "added";
+    status = 'added';
   }
 
-  if (status === "added")
+  if (status === 'added')
     await audioModel.findByIdAndUpdate(audioId, {
       $addToSet: { likes: req.user.id },
     });
 
-  if (status === "removed")
+  if (status === 'removed')
     await audioModel.findByIdAndUpdate(audioId, {
       $pull: { likes: req.user.id },
     });
@@ -61,9 +61,9 @@ export const getFavourites: RequestHandler = async (req, res) => {
 
   const result = await favouriteModel
     .findOne({ owner: userId })
-    .populate<{ items: TPopulateFavList }>({
-      path: "items",
-      populate: { path: "owner" },
+    .populate<{ items: TPopulateList }>({
+      path: 'items',
+      populate: { path: 'owner' },
     });
 
   if (result === null) return res.json({ audios: [] });
@@ -85,7 +85,7 @@ export const getIsFavourite: RequestHandler = async (req, res) => {
   const audioId = req.query.audioId;
 
   if (isValidObjectId(audioId) === false)
-    return res.status(422).json({ error: "Invalid audio id!" });
+    return res.status(422).json({ error: 'Invalid audio id!' });
 
   const isFavourite = await favouriteModel.findOne({
     ownerId: req.user.id,
