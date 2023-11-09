@@ -5,6 +5,7 @@ import {
   audioRouter,
   authRouter,
   favouriteRouter,
+  historiesRouter,
   playlistRouter,
   profileRouter,
 } from './routers';
@@ -20,6 +21,7 @@ app.use('/audio', audioRouter);
 app.use('/favourite', favouriteRouter);
 app.use('/playlist', playlistRouter);
 app.use('/profile', profileRouter);
+app.use('/history', historiesRouter);
 
 const PORT = process.env.PORT || 8989;
 app.listen(PORT, () => {
