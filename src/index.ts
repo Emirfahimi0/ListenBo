@@ -1,23 +1,25 @@
-import express from "express";
-import "dotenv/config";
-import "./db";
+import express from 'express';
+import 'dotenv/config';
+import './db';
 import {
   audioRouter,
   authRouter,
   favouriteRouter,
   playlistRouter,
-} from "./routers";
+  profileRouter,
+} from './routers';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static("src/public"));
+app.use(express.static('src/public'));
 
-app.use("/auth", authRouter);
-app.use("/audio", audioRouter);
-app.use("/favourite", favouriteRouter);
-app.use("/playlist", playlistRouter);
+app.use('/auth', authRouter);
+app.use('/audio', audioRouter);
+app.use('/favourite', favouriteRouter);
+app.use('/playlist', playlistRouter);
+app.use('/profile', profileRouter);
 
 const PORT = process.env.PORT || 8989;
 app.listen(PORT, () => {
