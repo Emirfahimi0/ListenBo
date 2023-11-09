@@ -1,5 +1,5 @@
-import { Model, Schema, model, models } from "mongoose";
-import { CATEGORIES } from "../constant";
+import { Model, Schema, model, models } from 'mongoose';
+import { CATEGORIES } from '../constant';
 
 const AudioSchema = new Schema<IAudioDocument>(
   {
@@ -9,7 +9,7 @@ const AudioSchema = new Schema<IAudioDocument>(
     },
     owner: {
       type: String,
-      ref: "User",
+      ref: 'User',
     },
     file: {
       type: Object,
@@ -25,17 +25,17 @@ const AudioSchema = new Schema<IAudioDocument>(
     likes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
       },
     ],
     category: {
       type: String,
       enum: CATEGORIES,
-      default: "Others",
+      default: 'Others',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const audioModel: Model<IAudioDocument> =
-  models.Audio || model("Audio", AudioSchema);
+  models.Audio || model('Audio', AudioSchema);
