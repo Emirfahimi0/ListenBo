@@ -41,10 +41,7 @@ export const updatePasswordValidation = yup.object().shape({
   userId: yup
     .string()
     .transform(function (value) {
-      if (this.isType(value) && isValidObjectId(value)) {
-        return value;
-      }
-      return "";
+      return this.isType(value) && isValidObjectId(value) ? value : "";
     })
     .required(VALIDATION.INVALID_USER_ID),
   password: yup
@@ -69,6 +66,30 @@ export const audioValidation = yup.object().shape({
     .string()
     .oneOf(CATEGORIES, VALIDATION.INVALID_CATEGORIES)
     .required(VALIDATION.CATEGORY_MISSING),
+});
+
+export const playlistValidation = yup.object().shape({
+  title: yup.string().trim().required(VALIDATION.TITLE_MISSING),
+  resId: yup.string().transform(function (value) {
+    return this.isType(value) && isValidObjectId(value) ? value : "";
+  }),
+  visibility: yup
+    .string()
+    .oneOf(["Public", "Private"], VALIDATION.INVALID_VISIBILITY)
+    .required(VALIDATION.VISIBILITY_MISSING),
+});
+
+export const oldPlaylistValidation = yup.object().shape({
+  title: yup.string().trim().required(VALIDATION.TITLE_MISSING),
+  item: yup.string().transform(function (value) {
+    return this.isType(value) && isValidObjectId(value) ? value : "";
+  }),
+  id: yup.string().transform(function (value) {
+    return this.isType(value) && isValidObjectId(value) ? value : "";
+  }),
+  visibility: yup
+    .string()
+    .oneOf(["Public", "Private"], VALIDATION.INVALID_VISIBILITY),
 });
 
 export const isArrayNotEmpty = (value: unknown[] | null | undefined) => {
