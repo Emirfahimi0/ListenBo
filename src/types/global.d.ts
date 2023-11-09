@@ -114,4 +114,10 @@ declare global {
       visibility: TPlaylistDefaultVisibility;
     };
   }
+
+  interface IHistoriesDocument {
+    all: IHistoryDefault[];
+    last: IHistoryDefault;
+    owner: ObjectId;
+  }
 }

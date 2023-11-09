@@ -15,3 +15,9 @@ type TPlaylistVisibility = 'Public' | 'Private' | 'auto';
 type TPlaylistDefaultVisibility = 'Public' | 'Private';
 
 type TPaginationQuery = { pageNo: string; limit: string };
+
+interface IHistoryDefault {
+  audio: ObjectId;
+  date: Date;
+  progress: number;
+}
