@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { fileParser, isVerified, verifyAuth } from "../middleware/auth";
-import { audioValidation } from "../utils";
-import { validator } from "../middleware/validator";
+import { isVerified, verifyAuth } from "../middleware/auth";
+
 import { getFavourites, getIsFavourite, toggleFavorite } from "../controller";
 
 export const favouriteRouter = Router();
