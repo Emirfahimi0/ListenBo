@@ -9,3 +9,9 @@ export const CATEGORIES = [
   "Tech",
   "Others",
 ];
+
+export const PLAYLIST_VISIBILITIES: TPlaylistVisibility[] = [
+  "Public",
+  "Private",
+  "auto",
+];
