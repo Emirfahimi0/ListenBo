@@ -91,4 +91,26 @@ declare global {
     owner: ObjectId;
     items: ObjectId[];
   }
+
+  interface IPlaylistDocument {
+    items: ObjectId[];
+    owner: ObjectId;
+    title: string;
+    visibility: TPlaylistVisibility;
+  }
+  interface IReqPlaylistDocument extends Request {
+    body: {
+      resId: string;
+      title: string;
+      visibility: TPlaylistDefaultVisibility;
+    };
+  }
+  interface IReqUpdatePlaylistDocument extends Request {
+    body: {
+      id: string;
+      item: string;
+      title: string;
+      visibility: TPlaylistDefaultVisibility;
+    };
+  }
 }
