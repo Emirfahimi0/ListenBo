@@ -1,6 +1,6 @@
-import { Request } from "express";
-import { ObjectId } from "mongoose";
-import { File } from "formidable";
+import { Request } from 'express';
+import { ObjectId } from 'mongoose';
+import { File } from 'formidable';
 
 declare global {
   interface IUserDocument {
@@ -80,6 +80,7 @@ declare global {
     _id: ObjectId;
     about: string;
     category: TCategoriesPlaylist;
+    createdAt: Date;
     file: IFileData;
     likes: ObjectId[];
     owner: T;
