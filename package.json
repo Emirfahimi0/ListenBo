@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsnd --respawn --transpile-only ./src/index.ts",
     "run-dev": "npm run dev",
-    "build": "tsc"
+    "build": "tsc",
+    "format": "prettier --write \"{src,test}/**/*.{js,ts}\""
   },
   "keywords": [],
   "author": "Badi",
@@ -32,6 +33,7 @@
     "@types/formidable": "^3.4.4",
     "@types/jsonwebtoken": "^9.0.4",
     "@types/mongoose": "^5.11.97",
-    "@types/nodemailer": "^6.4.13"
+    "@types/nodemailer": "^6.4.13",
+    "prettier": "^3.0.3"
   }
 }
