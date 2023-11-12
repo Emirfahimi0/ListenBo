@@ -23,5 +23,4 @@ const historiesSchema = new Schema<IHistoriesDocument>(
   { timestamps: true },
 );
 
-export const historysModel: Model<IHistoriesDocument> =
-  models.History || model('History', historiesSchema);
+export const historyModel: Model<IHistoriesDocument> = models.History || model('History', historiesSchema);
