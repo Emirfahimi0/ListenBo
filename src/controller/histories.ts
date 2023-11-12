@@ -4,7 +4,6 @@ import { historyModel } from "../models";
 export const updateHistory: RequestHandler = async (req, res) => {
 	const { audio, progress, date } = req.body;
 	const history: IHistoryContent = { audio, progress, date };
-
 	const oldHistory = await historyModel.findOne({ owner: req.user.id });
 
 	if (oldHistory === null) {
@@ -131,4 +130,58 @@ export const getAllHistories: RequestHandler = async (req, res) => {
 	]);
 
 	res.json({ histories });
+};
+export const getRecentlyPlayed: RequestHandler = async (req, res) => {
+	const match = { $match: { owner: req.user.id } };
+	const sliceMatch = {
+		$project: {
+			myHistory: { $slice: ["$all", 10] },
+		},
+	};
+
+	const dateSort = {
+		$project: {
+			histories: {
+				$sortArray: {
+					input: "$myHistory",
+					sortBy: { date: -1 },
+				},
+			},
+		},
+	};
+
+	const unwindWithIndex = { $unwind: { path: "$histories", includeArrayIndex: "index" } };
+	const audioInfoLookUp = {
+		$lookup: { from: "audios", localField: "histories.audio", foreignField: "_id", as: "audioInfo" },
+	};
+
+	const projectResult = {
+		$project: {
+			_id: 0,
+			id: "$audioInfo._id",
+			title: "$audioInfo.title",
+			about: "$audioInfo.about",
+			file: "$audioInfo.file.url",
+			poster: "$audioInfo.poster.url",
+			category: "$audioInfo.category.url",
+			owner: { name: "$owner.name", id: "$owner._id" },
+			date: "$histories.date",
+			progress: "$histories.progress",
+		},
+	};
+
+	const ownerLookUp = { $lookup: { from: "users", localField: "audioInfo.owner", foreignField: "_id", as: "owner" } };
+	const audios = await historyModel.aggregate([
+		match,
+		sliceMatch,
+		dateSort,
+		unwindWithIndex,
+		audioInfoLookUp,
+		{ $unwind: "$audioInfo" },
+		ownerLookUp,
+		{ $unwind: "$owner" },
+		projectResult,
+	]);
+
+	res.json({ audios });
 };
