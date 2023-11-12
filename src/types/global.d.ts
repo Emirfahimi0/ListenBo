@@ -116,8 +116,8 @@ declare global {
   }
 
   interface IHistoriesDocument {
-    all: IHistoryDefault[];
-    last: IHistoryDefault;
+    all: IHistoryContent[];
+    last: IHistoryContent;
     owner: ObjectId;
   }
 }

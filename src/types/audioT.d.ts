@@ -16,7 +16,7 @@ type TPlaylistDefaultVisibility = 'Public' | 'Private';
 
 type TPaginationQuery = { pageNo: string; limit: string };
 
-interface IHistoryDefault {
+interface IHistoryContent {
   audio: ObjectId;
   date: Date;
   progress: number;
