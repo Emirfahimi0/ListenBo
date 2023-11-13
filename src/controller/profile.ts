@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
-import { isValidObjectId } from "mongoose";
-import { audioModel, playlistModel, userModel } from "../models";
+import { PipelineStage, isValidObjectId } from "mongoose";
+import { audioModel, historyModel, playlistModel, userModel } from "../models";
+import moment from "moment";
 
 export const updateFollower: RequestHandler = async (req, res) => {
 	const { profileId } = req.params;
@@ -138,4 +139,53 @@ export const getPublicPlaylist: RequestHandler = async (req, res) => {
 	});
 
 	res.json({ playlist });
+};
+
+export const getRecommendProfile: RequestHandler = async (req, res) => {
+	const user = req.user;
+	let matchOptions: PipelineStage.Match = { $match: { _id: { $exists: true } } };
+	if (user !== undefined) {
+		const usersPreviousHistory = await historyModel.aggregate([
+			{ $match: { owner: user.id } },
+			{ $unwind: "$all" },
+			{ $match: { "all.date": { $gte: moment().subtract(30, "days").toDate() } } },
+			{ $group: { _id: "$all.audio" } },
+			{ $lookup: { from: "audios", localField: "_id", foreignField: "_id", as: "audioData" } },
+			{ $unwind: "$audioData" },
+			{ $group: { _id: null, category: { $addToSet: "$audioData.category" } } },
+		]);
+		const categories = usersPreviousHistory[0].category;
+		if (categories.length) {
+			matchOptions = { $match: { category: { $in: categories } } };
+		}
+	}
+
+	const audios = await audioModel.aggregate([
+		matchOptions,
+		{ $sort: { "likes.count": -1 } },
+		{ $limit: 10 },
+		{
+			$lookup: {
+				from: "users",
+				localField: "owner",
+				foreignField: "_id",
+				as: "owner",
+			},
+		},
+		{ $unwind: "$owner" },
+		{
+			$project: {
+				_id: 0,
+				id: "$_id",
+				title: "$title",
+				category: "$category",
+				about: "$about",
+				file: "$file.url",
+				poster: "$poster.url",
+				owner: { name: "$owner.name", id: "$owner.id" },
+			},
+		},
+	]);
+
+	res.json({ audios });
 };
