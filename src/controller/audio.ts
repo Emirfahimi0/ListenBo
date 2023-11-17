@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import cloudinary from "../cloud";
-import { audioModel } from "../models";
+import { audioModel, autoPlaylistModel } from "../models";
 import formidable from "formidable";
 
 interface ICreateAudioReq extends IReqWithFiles {
@@ -97,4 +97,22 @@ export const updateAudio: RequestHandler = async (req: ICreateAudioReq, res) => 
 			poster: audio.poster ? audio.poster.url : undefined,
 		},
 	});
+};
+
+export const getLatestUploads: RequestHandler = async (req, res) => {
+	const result = await audioModel.find().sort("-createdAt").limit(10).populate<TPopulate>("owner");
+
+	const audios = result.map((eachItem) => {
+		return {
+			id: eachItem.id,
+			title: eachItem.title,
+			about: eachItem.about,
+			category: eachItem.category,
+			file: eachItem.file.url,
+			poster: eachItem.poster?.url,
+			owner: { name: eachItem.owner.name, id: eachItem.owner._id },
+		};
+	});
+
+	res.json({ audios });
 };
