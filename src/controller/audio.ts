@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import cloudinary from "../cloud";
-import { audioModel } from "../models";
+import { audioModel, autoPlaylistModel } from "../models";
 import formidable from "formidable";
 
 interface ICreateAudioReq extends IReqWithFiles {
