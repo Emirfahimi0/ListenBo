@@ -19,9 +19,10 @@ const { MAIL, PASSWORD, UPDATE_PASSWORD } = ENGLISH;
 
 export const createUser: RequestHandler = async (req: ICreatedUser, res) => {
 	const { name, email, password } = req.body;
+	const existUser = await userModel.findOne({ email });
 
-	// const newUser = new userModel({ name, email, password });
-	// newUser.save();
+	if (existUser !== null) return res.status(433).json({ error: "Email is already in use!" });
+
 	const createdUser = await userModel.create({ name, email, password });
 
 	const token = generateToken();
