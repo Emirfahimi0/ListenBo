@@ -27,7 +27,7 @@ export const createAudio: RequestHandler = async (req: ICreateAudioReq, res) => 
 		category,
 		poster,
 		owner: ownerId,
-		file: { url: audioRes.url, publicId: audioRes.public_id },
+		file: { url: audioRes.secure_url, publicId: audioRes.public_id },
 	});
 
 	if (poster !== undefined) {
