@@ -35,7 +35,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": "./",
-    // "paths": {},
+    // "paths": {
+    //   "react": ["./node_modules/@types/react"]
+    // },
     // "rootDirs": [],
     "typeRoots": ["src/types/**", "node_modules/@types/"],
     // "types": [],
