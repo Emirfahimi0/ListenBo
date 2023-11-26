@@ -2,8 +2,8 @@ import { Dimensions, PixelRatio } from "react-native";
 
 const { height, width } = Dimensions.get("window");
 
-const baseHeight = 154;
-const baseWidth = 375;
+const baseHeight = 360;
+const baseWidth = 640;
 
 const calculateScaleFactor = () => {
   const baseHypotenuse = Math.sqrt(baseWidth * baseWidth + baseHeight * baseHeight);
