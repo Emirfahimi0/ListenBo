@@ -4,7 +4,7 @@ import { SignUp } from "./src/pages/SignUp";
 import { WelcomePage } from "./src/pages/Welcome";
 
 const App = () => {
-  return <WelcomePage />;
+  return <SignUp />;
 };
 
 export default App;
