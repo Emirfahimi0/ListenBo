@@ -7,10 +7,11 @@ import {
   colorRose,
   colorTransparent,
   colorWhite,
+  flexRow,
   fs16BoldWhite1,
   fsCapitalize,
   sh16,
-  sh48,
+  sh4,
   sw2,
   sw20,
   sw240,
@@ -61,10 +62,11 @@ export const CustomButton: FunctionComponent<ICustomButtonProps> = ({
   const color = ((hover === true && secondary !== true) || loading === true) && disabled !== true ? colorRose._1 : colorRose._3;
 
   const defaultButtonStyle: ViewStyle = {
+    ...flexRow,
     ...border(color, sw2),
     ...centerHorizontal,
     backgroundColor: secondary ? colorTransparent : color,
-    height: sh48,
+    paddingVertical: sh4,
     opacity: disabled === true ? 0.5 : 1,
     width: sw240,
     ...buttonStyle,
