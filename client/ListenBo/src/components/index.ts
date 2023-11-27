@@ -1,3 +1,3 @@
 export * from "./spacer";
-export * from "./customTextInput";
-export * from "./buttons";
+export * from "./Input";
+export * from "./Button";
