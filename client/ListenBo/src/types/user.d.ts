@@ -1,4 +1,4 @@
-interface ISignUpForm {
+declare interface ISignUpForm {
   email: string;
   name: string;
   password: string;
@@ -7,7 +7,7 @@ interface ISignUpForm {
   errorPassword?: string;
 }
 
-interface IRequestBody {
+declare interface IRequestBody {
   name: string;
   email: string;
   password: string;
