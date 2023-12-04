@@ -17,16 +17,17 @@ import {
   spaceAroundVertical,
   sw28,
   sw296,
-  sw4,
   sw8,
 } from "../styles";
 import { LANGUAGE } from "../constants";
 import { CustomButton, CustomSpacer } from "../components";
 const { WELCOME_PAGE } = LANGUAGE;
 
-interface IWelcomeProps {}
+interface IWelcomePageProps {
+  navigation: IStackNavigationProp;
+}
 
-export const WelcomePage: FunctionComponent<IWelcomeProps> = ({}: IWelcomeProps) => {
+export const WelcomePage: FunctionComponent<IWelcomePageProps> = ({ navigation }: IWelcomePageProps) => {
   return (
     <SafeAreaView style={backgroundSafeArea}>
       <View style={{ ...flexChild, ...spaceAroundVertical, marginVertical: sh32 }}>
@@ -35,7 +36,12 @@ export const WelcomePage: FunctionComponent<IWelcomeProps> = ({}: IWelcomeProps)
           <Image source={require("../assets/images/welcome.png")} style={{ height: sh368, width: sw296, resizeMode: "contain" }} />
         </View>
         <View style={{ ...centerVertical, paddingVertical: sh32 }}>
-          <CustomButton onPress={() => {}} textStyle={fsAlignCenter} buttonStyle={btnStyle} text={WELCOME_PAGE.SIGN_UP_LABEL} />
+          <CustomButton
+            onPress={() => navigation.navigate("SignUp")}
+            textStyle={fsAlignCenter}
+            buttonStyle={btnStyle}
+            text={WELCOME_PAGE.SIGN_UP_LABEL}
+          />
         </View>
         <View style={{ ...flexRow, ...centerHorizontal }}>
           <Text style={fs16RegWhite1}>{WELCOME_PAGE.ALREADY_HAVE_ACCOUNT_LABEL}</Text>
@@ -60,3 +66,5 @@ const btnStyle: ViewStyle = {
   marginHorizontal: sw28,
   borderRadius: sw8,
 };
+
+export default WelcomePage;

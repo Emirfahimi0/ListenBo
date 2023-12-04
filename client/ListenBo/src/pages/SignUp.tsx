@@ -43,7 +43,11 @@ import { Icon } from "../components/Icons/";
 import { isPasswordValid, isValidEmail } from "../utils";
 const { WELCOME_PAGE, FORM_LABEL } = LANGUAGE;
 
-export const SignUp: FunctionComponent = () => {
+export interface ISignUpProps {
+  navigation: IStackNavigationProp;
+}
+
+export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpProps) => {
   const [signUp, setSignUp] = useState<ISignUpForm>({
     email: "",
     name: "",
@@ -143,15 +147,17 @@ export const SignUp: FunctionComponent = () => {
     return setVisiblity(!visibility);
   };
   const disable =
-    (signUp.email !== "" && signUp.errorEmail !== undefined) ||
-    (signUp.password !== "" && signUp.errorPassword !== undefined) ||
-    (signUp.name !== "" && signUp.errorName !== undefined);
+    (signUp.email === "" || signUp.errorEmail === undefined) &&
+    (signUp.password === "" || signUp.errorPassword === undefined) &&
+    (signUp.name === "" || signUp.errorName === undefined);
+
+  console.log("disable is equal to", disable);
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={backgroundStyle}>
       <SafeAreaView style={{ paddingVertical: sh10 }}>
         <View style={{ ...flexRow, ...justifyContentStart }}>
-          <TouchableOpacity style={arrowStyle}>
+          <TouchableOpacity style={arrowStyle} onPress={() => navigation.goBack()}>
             <Icon color={colorWhite._3} name="arrow-left" size={sw16} />
           </TouchableOpacity>
         </View>
@@ -210,7 +216,7 @@ export const SignUp: FunctionComponent = () => {
               text={WELCOME_PAGE.SIGN_UP_LABEL}
               buttonStyle={{ borderRadius: sw16 }}
               textStyle={fsAlignCenter}
-              disabled={disable}
+              disabled={disable === false}
               loading={loading}
             />
           </View>
