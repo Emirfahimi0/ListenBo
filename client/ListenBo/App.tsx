@@ -1,10 +1,20 @@
 import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { SignUp } from "./src/pages/SignUp";
-import { WelcomePage } from "./src/pages/Welcome";
+import { NavigationContainer } from "@react-navigation/native";
+import { PublicRoute } from "./src/navigation";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { flexChild } from "./src/styles";
 
 const App = () => {
-  return <SignUp />;
+  return (
+    <GestureHandlerRootView style={flexChild}>
+      <BottomSheetModalProvider>
+        <NavigationContainer>
+          <PublicRoute />
+        </NavigationContainer>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
+  );
 };
 
 export default App;
