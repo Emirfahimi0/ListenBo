@@ -28,7 +28,7 @@
     /* Module Resolution Options */
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": "../",
+    "baseUrl": "/",
     // "paths": {
     //   "react": ["./node_modules/react"]
     // },
