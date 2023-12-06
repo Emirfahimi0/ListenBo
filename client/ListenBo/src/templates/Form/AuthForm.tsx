@@ -39,7 +39,7 @@ import { CustomButton, CustomSpacer, CustomTextInput, Icon, BottomSheetModalComp
 import { isPasswordValid, isValidEmail } from "../../utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
-const { WELCOME_PAGE, FORM_LABEL } = LANGUAGE;
+const { FORM } = LANGUAGE;
 
 export interface IAuthFormTemplatesProps {
   authForm: ISignUpForm;
@@ -50,6 +50,7 @@ export interface IAuthFormTemplatesProps {
   loading?: boolean;
   setValue: (value: ISignUpForm) => void;
   subContent: JSX.Element;
+  modalContent?: JSX.Element;
 }
 
 export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
@@ -59,6 +60,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   disableContinue,
   handleNextPage,
   loading,
+  modalContent,
   subContent,
   setValue,
 }: IAuthFormTemplatesProps) => {
@@ -81,12 +83,12 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   const handleOnBlurEmail = () => {
     let error = "";
     if (email === "") {
-      error = FORM_LABEL.EMAIL_ADDRESS_EMPTY;
+      error = FORM.EMAIL_ADDRESS_EMPTY;
       return setValue({ ...authForm, ...{ errorEmail: error } });
     }
 
     if (isValidEmail(email) === false) {
-      error = FORM_LABEL.ERROR_INVALID_EMAIL;
+      error = FORM.ERROR_INVALID_EMAIL;
       return setValue({ ...authForm, ...{ errorEmail: error } });
     }
 
@@ -99,15 +101,15 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
     if (name === undefined) return;
 
     if (name.trim() === "") {
-      error = FORM_LABEL.NAME_EMPTY;
+      error = FORM.NAME_EMPTY;
       return setValue({ ...authForm, ...{ errorName: error } });
     }
     if (name.length < 3) {
-      error = FORM_LABEL.NAME_MIN;
+      error = FORM.NAME_MIN;
       return setValue({ ...authForm, ...{ errorName: error } });
     }
     if (name.length > 20) {
-      error = FORM_LABEL.NAME_MAX;
+      error = FORM.NAME_MAX;
       return setValue({ ...authForm, ...{ errorName: error } });
     }
 
@@ -118,11 +120,11 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
     let error = "";
 
     if (password === "") {
-      error = FORM_LABEL.PASSWORD_EMPTY;
+      error = FORM.PASSWORD_EMPTY;
       return setValue({ ...authForm, ...{ errorPassword: error } });
     }
     if (isPasswordValid(password) === false) {
-      error = FORM_LABEL.PASSWORD_INVALID;
+      error = FORM.PASSWORD_INVALID;
       return setValue({ ...authForm, ...{ errorPassword: error } });
     }
 
@@ -168,8 +170,8 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
       </SafeAreaView>
       <View style={borderBottomContainer}>
         <CustomTextInput
-          label={FORM_LABEL.EMAIL_ADDRESS_LABEL}
-          labelHolder={WELCOME_PAGE.ENTER_EMAIL_LABEL}
+          label={FORM.EMAIL_ADDRESS_LABEL}
+          labelHolder={FORM.ENTER_EMAIL_LABEL}
           error={errorEmail}
           value={email}
           onChange={handleOnChangeEmail}
@@ -180,13 +182,13 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
         />
         {name === undefined ? null : (
           <CustomTextInput
-            label={FORM_LABEL.NAME_LABEL}
+            label={FORM.NAME_LABEL}
             onChange={handleOnChangeName}
             onBlur={handleOnBlurName}
             error={errorName}
             onFocus={handleOnFocusName}
             value={name}
-            labelHolder={FORM_LABEL.NAME_PLACEHOLDER}
+            labelHolder={FORM.NAME_PLACEHOLDER}
             containerStyle={{ paddingVertical: sh4 }}
           />
         )}
@@ -195,8 +197,8 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           autoCapitalize="none"
           containerStyle={{ paddingVertical: sh4 }}
           error={errorPassword}
-          label={FORM_LABEL.PASSWORDS_LABEL}
-          labelHolder={FORM_LABEL.PASSWORD_PLACEHOLDER}
+          label={FORM.PASSWORDS_LABEL}
+          labelHolder={FORM.PASSWORD_PLACEHOLDER}
           onBlur={handleOnBlurPassword}
           onChange={handleOnChangePassword}
           onFocus={handleOnFocusPassword}
@@ -209,7 +211,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           {name !== undefined ? null : (
             <Pressable disabled={loading} onPress={showModal}>
               <View style={{ ...alignItemsEnd, paddingRight: sw8 }}>
-                <Text style={fs12BoldGray1}>{FORM_LABEL.FORGOT_PASSWORD_LABEL}</Text>
+                <Text style={fs12BoldGray1}>{FORM.FORGOT_PASSWORD_LABEL}</Text>
               </View>
             </Pressable>
           )}
@@ -230,7 +232,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           {subContent}
         </Fragment>
       </View>
-      <BottomSheetModalComponent bottomSheetModalRef={bottomSheetModalRef} hideModal={hideModal} />
+      <BottomSheetModalComponent bottomSheetModalRef={bottomSheetModalRef} hideModal={hideModal} children={modalContent} />
     </View>
   );
 };

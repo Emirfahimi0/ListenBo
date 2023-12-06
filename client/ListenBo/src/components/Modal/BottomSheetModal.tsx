@@ -7,11 +7,13 @@ import { Icon } from "../Icons";
 
 interface IBottomSheetModalComponentProps {
   bottomSheetModalRef: RefObject<BottomSheetModalMethods>;
+  children?: JSX.Element;
   hideModal: () => void;
 }
 
 export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalComponentProps> = ({
   bottomSheetModalRef,
+  children,
   hideModal,
 }: IBottomSheetModalComponentProps) => {
   const snapPoints = useMemo(() => {
@@ -45,6 +47,7 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
             <Icon color={colorGray._1} name="arrow-left" size={sw24} />
           </TouchableOpacity>
         </View>
+        {children === undefined ? null : children}
       </View>
     </BottomSheetModal>
   );

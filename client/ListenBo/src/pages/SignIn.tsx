@@ -2,12 +2,13 @@ import React, { Fragment, FunctionComponent, useState } from "react";
 
 import { AuthFormTemplates } from "../templates";
 import { LANGUAGE } from "../constants";
-import { LabelLink } from "../components";
+import { LabelLink, RecoveryEmail } from "../components";
+import { sh4, sh50 } from "../styles";
 
 export interface ISignInProps {
   navigation: IStackNavigationProp;
 }
-const { FORM_LABEL } = LANGUAGE;
+const { FORM } = LANGUAGE;
 
 export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInProps) => {
   const [signIn, setSignIn] = useState<ISignUpForm>({
@@ -33,13 +34,16 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
 
   const disable = email === "" || errorEmail !== undefined || password === "" || errorPassword !== undefined;
 
-  const appLink = (
-    <LabelLink
-      disabledLink={false}
-      subLink={true}
-      label={FORM_LABEL.NO_ACCOUNT_LABEL}
-      subLabel={FORM_LABEL.SIGN_UP_LABEL}
-      onPressAction={() => {}}
+  const appLink: JSX.Element = (
+    <LabelLink disabledLink={false} subLink={true} label={FORM.NO_ACCOUNT_LABEL} subLabel={FORM.SIGN_UP_LABEL} onPressAction={() => {}} />
+  );
+
+  const modalContent: JSX.Element = (
+    <RecoveryEmail
+      label={FORM.FORGET_PASSWORD_LABEL}
+      title={FORM.FORGET_PASSWORD_SUB_LABEL}
+      spaceToTop={sh4}
+      prefixStyle={{ paddingVertical: sh50 }}
     />
   );
 
@@ -52,8 +56,9 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
         setValue={setSignIn}
         authForm={signIn}
         loading={loading}
-        continueLabel={FORM_LABEL.SIGN_IN_LABEL}
+        continueLabel={FORM.SIGN_IN_LABEL}
         subContent={appLink}
+        modalContent={modalContent}
       />
     </Fragment>
   );

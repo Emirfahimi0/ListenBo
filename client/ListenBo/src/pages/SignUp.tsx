@@ -8,7 +8,7 @@ export interface ISignUpProps {
   navigation: IStackNavigationProp;
 }
 
-const { FORM_LABEL, WELCOME_PAGE } = LANGUAGE;
+const { FORM, WELCOME_PAGE } = LANGUAGE;
 
 export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpProps) => {
   const [signUp, setSignUp] = useState<ISignUpForm>({
@@ -30,6 +30,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
     };
 
     console.log(request);
+    setLoading(false);
   };
 
   const handlePreviousPage = () => {
@@ -44,7 +45,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
       disabledLink={true}
       subLink={true}
       label={WELCOME_PAGE.ALREADY_HAVE_ACCOUNT_LABEL}
-      subLabel={FORM_LABEL.SIGN_IN_LABEL}
+      subLabel={FORM.SIGN_IN_LABEL}
       onPressAction={() => {}}
     />
   );
@@ -58,7 +59,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         setValue={setSignUp}
         authForm={signUp}
         loading={loading}
-        continueLabel={FORM_LABEL.SIGN_UP_LABEL}
+        continueLabel={FORM.SIGN_UP_LABEL}
         subContent={appLink}
       />
     </Fragment>

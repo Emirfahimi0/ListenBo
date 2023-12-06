@@ -12,3 +12,10 @@ declare interface IRequestBody {
   email: string;
   password: string;
 }
+
+declare namespace IUserInterface {
+  interface IUserRecovery {
+    email: string;
+    error?: string;
+  }
+}
