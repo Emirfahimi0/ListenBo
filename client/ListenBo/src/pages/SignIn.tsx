@@ -4,31 +4,26 @@ import { AuthFormTemplates } from "../templates";
 import { LANGUAGE } from "../constants";
 import { LabelLink } from "../components";
 
-export interface ISignUpProps {
+export interface ISignInProps {
   navigation: IStackNavigationProp;
 }
+const { FORM_LABEL } = LANGUAGE;
 
-const { FORM_LABEL, WELCOME_PAGE } = LANGUAGE;
-
-export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpProps) => {
-  const [signUp, setSignUp] = useState<ISignUpForm>({
+export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInProps) => {
+  const [signIn, setSignIn] = useState<ISignUpForm>({
     email: "",
-    name: "",
     password: "",
     errorEmail: undefined,
-    errorName: undefined,
     errorPassword: undefined,
   });
-  const { email, name, password, errorEmail, errorName, errorPassword } = signUp;
+  const { email, password, errorEmail, errorPassword } = signIn;
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
 
-  const handleSignUp = () => {
+  const handleSignIn = () => {
     let request: IRequestBody = {
-      name: signUp.name,
-      email: signUp.email,
-      password: signUp.password,
+      email: email,
+      password: password,
     };
-
     console.log(request);
   };
 
@@ -36,15 +31,14 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
     navigation.goBack();
   };
 
-  const disable =
-    email === "" || errorEmail !== undefined || name === "" || errorName !== undefined || password === "" || errorPassword !== undefined;
+  const disable = email === "" || errorEmail !== undefined || password === "" || errorPassword !== undefined;
 
   const appLink = (
     <LabelLink
-      disabledLink={true}
+      disabledLink={false}
       subLink={true}
-      label={WELCOME_PAGE.ALREADY_HAVE_ACCOUNT_LABEL}
-      subLabel={FORM_LABEL.SIGN_IN_LABEL}
+      label={FORM_LABEL.NO_ACCOUNT_LABEL}
+      subLabel={FORM_LABEL.SIGN_UP_LABEL}
       onPressAction={() => {}}
     />
   );
@@ -53,12 +47,12 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
     <Fragment>
       <AuthFormTemplates
         handlePreviousPage={handlePreviousPage}
-        handleNextPage={handleSignUp}
+        handleNextPage={handleSignIn}
         disableContinue={disable}
-        setValue={setSignUp}
-        authForm={signUp}
+        setValue={setSignIn}
+        authForm={signIn}
         loading={loading}
-        continueLabel={FORM_LABEL.SIGN_UP_LABEL}
+        continueLabel={FORM_LABEL.SIGN_IN_LABEL}
         subContent={appLink}
       />
     </Fragment>

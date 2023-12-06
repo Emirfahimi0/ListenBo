@@ -28,12 +28,12 @@
     /* Module Resolution Options */
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": "../",
+    "baseUrl": "/",
     // "paths": {
     //   "react": ["./node_modules/react"]
     // },
     // "rootDirs": [],
-    "typeRoots": ["src/types/**", "node_modules/@types/"],
+    "typeRoots": ["src/types", "node_modules/@types/"],
     "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

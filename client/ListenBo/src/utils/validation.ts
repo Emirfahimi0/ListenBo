@@ -8,3 +8,5 @@ export const isPasswordValid = (password: string) => {
 
   return passwordRegex.test(password);
 };
+
+export const isNotEmptyString = (value: string, error?: string): boolean => value !== "" && error !== undefined;

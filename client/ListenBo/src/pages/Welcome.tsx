@@ -46,7 +46,7 @@ export const WelcomePage: FunctionComponent<IWelcomePageProps> = ({ navigation }
         <View style={{ ...flexRow, ...centerHorizontal }}>
           <Text style={fs16RegWhite1}>{WELCOME_PAGE.ALREADY_HAVE_ACCOUNT_LABEL}</Text>
           <CustomSpacer isHorizontal={true} space={sw8} />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
             <Text style={fs16RegRose2}>{WELCOME_PAGE.SIGN_IN_LABEL}</Text>
           </TouchableOpacity>
         </View>
@@ -66,3 +66,5 @@ const btnStyle: ViewStyle = {
   marginHorizontal: sw28,
   borderRadius: sw8,
 };
+
+export default WelcomePage;
