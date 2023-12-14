@@ -1,8 +1,9 @@
-import React, { Fragment, FunctionComponent, useState } from "react";
+import React, { Fragment, FunctionComponent, useRef, useState } from "react";
 
 import { AuthFormTemplates } from "../templates";
 import { LANGUAGE } from "../constants";
 import { LabelLink } from "../components";
+import { VerificationEvent } from "./VerificationEvent";
 
 export interface ISignUpProps {
   navigation: IStackNavigationProp;
@@ -22,15 +23,19 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
   const { email, name, password, errorEmail, errorName, errorPassword } = signUp;
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
 
+  const modalRef = useRef<IModalRef | null>(null);
+
   const handleSignUp = () => {
-    let request: IRequestBody = {
+    let request: IUserNetwork.IRequestCreateAccount = {
       name: signUp.name,
       email: signUp.email,
       password: signUp.password,
     };
 
     console.log(request);
-    setLoading(false);
+    modalRef.current!.showModal();
+    // send server here
+    setLoading(true);
   };
 
   const handlePreviousPage = () => {
@@ -46,9 +51,16 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
       subLink={true}
       label={WELCOME_PAGE.ALREADY_HAVE_ACCOUNT_LABEL}
       subLabel={FORM.SIGN_IN_LABEL}
+      centerPosition={true}
       onPressAction={() => {}}
     />
   );
+
+  const handleVerification = () => {
+    console.log("varification");
+  };
+
+  let content: JSX.Element = <VerificationEvent handleOtpEvent={handleVerification} />;
 
   return (
     <Fragment>
@@ -61,6 +73,8 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         loading={loading}
         continueLabel={FORM.SIGN_UP_LABEL}
         subContent={appLink}
+        modalContent={content}
+        ref={modalRef}
       />
     </Fragment>
   );
