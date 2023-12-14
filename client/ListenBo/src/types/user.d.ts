@@ -7,15 +7,21 @@ declare interface ISignUpForm {
   errorPassword?: string;
 }
 
-declare interface IRequestBody {
-  name?: string;
-  email: string;
-  password: string;
-}
-
-declare namespace IUserInterface {
-  interface IUserRecovery {
+declare namespace IUserNetwork {
+  interface IRecoverEmail {
     email: string;
     error?: string;
   }
+
+  interface IRequestCreateAccount {
+    name?: string;
+    email: string;
+    password: string;
+  }
+}
+
+interface IOTPCode {
+  code: string | undefined;
+  error: string | undefined;
+  isSuccess: boolean;
 }
