@@ -34,7 +34,7 @@ import { Icon } from "../Icons/IcoMoon";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from "react-native-reanimated";
 
 interface ICustomTextInputProps extends TextInputProps {
-  containerStyle?: ViewStyle;
+  containerStyle?: TextStyle;
   error?: string;
   errorBorderStyle?: number;
   increaseErrorWidth?: number;
@@ -117,7 +117,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
     }
   };
 
-  const textInputStyle: TextStyle = containerStyle !== undefined ? { ...containerStyle, ...defaultTextStyle } : defaultTextStyle;
+  const textInputStyle: TextStyle = containerStyle !== undefined ? { ...defaultTextStyle, ...containerStyle } : defaultTextStyle;
 
   useEffect(() => {
     if (error !== undefined) shakeUI();
@@ -144,7 +144,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
         {visibilityText === undefined ? null : (
           <View style={{ position: "absolute", right: sw20, top: sh32 }}>
             <Pressable onPress={setVisible}>
-              <Icon color={colorRose._2} name={visibilityText === true ? "eye-invisible" : "eye"} size={sw16} />
+              <Icon color={colorRose._2} name={visibilityText === true ? "eye-disabled" : "eye"} size={sw16} />
             </Pressable>
           </View>
         )}
@@ -153,7 +153,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
           <Fragment>
             <CustomSpacer space={sh8} />
             <Animated.View style={errorLabelStyle}>
-              <Icon color={colorRose._2} name="exclamation-circle" size={sw16} />
+              <Icon color={colorRose._2} name="warning" size={sw16} />
               <CustomSpacer isHorizontal={true} space={sw8} />
               <Text style={errorWidthStyle}>{error}</Text>
             </Animated.View>

@@ -2,23 +2,24 @@ import { BottomSheetModal, BottomSheetBackdrop, BottomSheetBackdropProps } from 
 import React, { FunctionComponent, RefObject, useCallback, useMemo } from "react";
 import { Platform, TouchableOpacity, View, ViewStyle } from "react-native";
 import { colorGray, colorTransparent, colorWhite, flexChild, flexRow, justifyContentStart, sw16, sw24, sw40, sw8 } from "../../styles";
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Icon } from "../Icons";
 
 interface IBottomSheetModalComponentProps {
-  bottomSheetModalRef: RefObject<BottomSheetModalMethods>;
+  bottomSheetModalRef: RefObject<TBottomModalSheetProps>;
+  children?: JSX.Element;
   hideModal: () => void;
 }
 
 export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalComponentProps> = ({
   bottomSheetModalRef,
+  children,
   hideModal,
 }: IBottomSheetModalComponentProps) => {
   const snapPoints = useMemo(() => {
     if (Platform.OS === "ios") {
       return ["93%"];
     } else {
-      return ["95%"];
+      return ["60%"];
     }
   }, []);
 
@@ -42,9 +43,10 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
       <View style={modalStyle}>
         <View style={{ ...flexRow, ...justifyContentStart }}>
           <TouchableOpacity style={arrowStyle} onPress={hideModal}>
-            <Icon color={colorGray._1} name="arrow-left" size={sw24} />
+            <Icon color={colorGray._1} name="arrow-back-circle" size={sw24} />
           </TouchableOpacity>
         </View>
+        {children === undefined ? null : children}
       </View>
     </BottomSheetModal>
   );

@@ -35,3 +35,27 @@ export const colorWhite = {
   _2: "#FBFBFB",
   _3: "#FBFBFB",
 };
+
+export const colorOrange = {
+  _1: "#FF521B",
+  _2: "#FF825C",
+  _3: "#FFD0C2",
+  _4: "#CC3000",
+  _5: "#F68E5F",
+};
+
+export const colorBlue = {
+  _1: "#020122",
+  _2: "#070462",
+  _3: "#090576",
+  _4: "#04023B",
+  _5: "#324376",
+};
+
+export const colorGreen = {
+  _1: "#8DE969",
+  _2: "#378E15",
+  _3: "#AEEF95",
+  _4: "#6BE23C",
+  _5: "#D7F7CA",
+};

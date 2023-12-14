@@ -1,7 +1,8 @@
 import React, { Fragment, FunctionComponent, useCallback, useState } from "react";
-import { Pressable, Text, TextStyle, ViewStyle } from "react-native";
+import { Pressable, Text, TextStyle, View, ViewStyle } from "react-native";
 import {
   border,
+  centerHV,
   centerHorizontal,
   colorGray,
   colorRose,
@@ -10,22 +11,24 @@ import {
   flexRow,
   fs16BoldWhite1,
   fsCapitalize,
-  sh16,
+  sh18,
   sh4,
   sw2,
   sw20,
   sw240,
+  sw4,
   sw8,
 } from "../../styles";
 import { debounce } from "lodash";
 import { CircleSnail } from "react-native-progress";
 import { CustomSpacer } from "../spacer";
 import { Icon } from "../Icons";
+import { IconNames } from "../../types/icon";
 
 interface ICustomButtonProps {
   buttonStyle?: ViewStyle;
   disabled?: boolean;
-  icon?: string;
+  icon?: IconNames;
   iconColor?: string;
   iconSize?: number;
   loading?: boolean;
@@ -96,13 +99,15 @@ export const CustomButton: FunctionComponent<ICustomButtonProps> = ({
             <CustomSpacer isHorizontal={true} space={sw8} />
           </Fragment>
         ) : null}
-        {icon === undefined ? null : (
-          <Fragment>
-            <Icon color={defaultIconColor} name={icon} size={iconSize || sh16} />
-            <CustomSpacer isHorizontal={true} space={sw8} />
-          </Fragment>
-        )}
-        <Text style={{ ...fs16BoldWhite1, ...fsCapitalize, color: textColor, ...textStyle }}>{text}</Text>
+        <View style={{ ...flexRow, ...centerHV }}>
+          <Text style={{ ...fs16BoldWhite1, ...fsCapitalize, color: textColor, ...textStyle }}>{text}</Text>
+          <CustomSpacer isHorizontal={true} space={sw4} />
+          {icon === undefined ? null : (
+            <Fragment>
+              <Icon color={defaultIconColor} name={icon} size={iconSize || sh18} />
+            </Fragment>
+          )}
+        </View>
       </Pressable>
     </Fragment>
   );

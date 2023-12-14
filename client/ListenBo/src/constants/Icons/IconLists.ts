@@ -1,7 +1,7 @@
 import { iconList } from "react-icomoon";
-import json from "./selection.json";
+import iconSet from "./selection.json";
 
-iconList(json);
+iconList(iconSet);
 
 // sample output
 [
