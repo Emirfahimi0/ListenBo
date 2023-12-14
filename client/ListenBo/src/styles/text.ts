@@ -1,5 +1,5 @@
 import { TextStyle } from "react-native";
-import { colorBlack, colorGray, colorJet, colorRose, colorWhite } from "./color";
+import { colorBlack, colorGray, colorJet, colorOrange, colorRose, colorWhite } from "./color";
 import { NunitoBold, NunitoRegular, NunitoSemiBold } from "../constants";
 import { scaleHeight } from "../utils";
 import { sh10, sh12, sh14, sh16, sh18, sh20, sh24, sh32, sh36, sh40, sh48, sh8 } from "./size";
@@ -43,6 +43,12 @@ export const fs8BoldGray1: TextStyle = {
 };
 export const fs10BoldGray1: TextStyle = {
   color: colorGray._1,
+  fontFamily: NunitoBold,
+  fontSize: sh10,
+  lineHeight: scaleHeight(10 * 1.6),
+};
+export const fs10BoldRose1: TextStyle = {
+  color: colorRose._1,
   fontFamily: NunitoBold,
   fontSize: sh10,
   lineHeight: scaleHeight(10 * 1.6),
@@ -98,14 +104,14 @@ export const fs12BoldBlack2: TextStyle = {
 };
 
 export const fs12BoldGray1: TextStyle = {
-  color: colorJet._2,
+  color: colorGray._1,
   fontFamily: NunitoBold,
   fontSize: sh12,
   lineHeight: scaleHeight(12 * 1.3),
 };
 
 export const fs12BoldGray2: TextStyle = {
-  color: colorJet._2,
+  color: colorGray._2,
   fontFamily: NunitoBold,
   fontSize: sh12,
   lineHeight: scaleHeight(12 * 1.3),
@@ -113,6 +119,19 @@ export const fs12BoldGray2: TextStyle = {
 
 export const fs12BoldGray3: TextStyle = {
   color: colorGray._3,
+  fontFamily: NunitoBold,
+  fontSize: sh12,
+  lineHeight: scaleHeight(12 * 1.3),
+};
+
+export const fs12BoldOrange3: TextStyle = {
+  color: colorOrange._3,
+  fontFamily: NunitoBold,
+  fontSize: sh12,
+  lineHeight: scaleHeight(12 * 1.3),
+};
+export const fs12BoldOrange2: TextStyle = {
+  color: colorOrange._2,
   fontFamily: NunitoBold,
   fontSize: sh12,
   lineHeight: scaleHeight(12 * 1.3),
@@ -127,6 +146,12 @@ export const fs12BoldWhite1: TextStyle = {
 
 export const fs12RegBlack2: TextStyle = {
   color: colorBlack._2,
+  fontFamily: NunitoRegular,
+  fontSize: sh12,
+  lineHeight: scaleHeight(12 * 1.3),
+};
+export const fs12SemiGray2: TextStyle = {
+  color: colorGray._2,
   fontFamily: NunitoRegular,
   fontSize: sh12,
   lineHeight: scaleHeight(12 * 1.3),
@@ -305,6 +330,12 @@ export const fs18BoldBlack2: TextStyle = {
   fontSize: sh18,
   lineHeight: scaleHeight(18 * 1.35),
 };
+export const fs18BoldOrange1: TextStyle = {
+  color: colorOrange._1,
+  fontFamily: NunitoBold,
+  fontSize: sh18,
+  lineHeight: scaleHeight(18 * 1.35),
+};
 
 export const fs18BoldWhite2: TextStyle = {
   color: colorWhite._2,
@@ -335,6 +366,13 @@ export const fs20BoldGray1: TextStyle = {
 
 export const fs20BoldGray3: TextStyle = {
   color: colorGray._3,
+  fontFamily: NunitoBold,
+  fontSize: sh20,
+  lineHeight: scaleHeight(20 * 1.4),
+};
+
+export const fs20BoldOrange1: TextStyle = {
+  color: colorOrange._1,
   fontFamily: NunitoBold,
   fontSize: sh20,
   lineHeight: scaleHeight(20 * 1.4),
