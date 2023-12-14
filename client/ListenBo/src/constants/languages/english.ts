@@ -25,6 +25,16 @@ export const LANGUAGE = {
     PASSWORD_PLACEHOLDER: "Please enter your password",
     PASSWORDS_LABEL: "Password",
     SIGN_IN_LABEL: "Sign In",
+    CONTINUE_LABEL: "Continue",
     SIGN_UP_LABEL: "Sign Up",
+  },
+
+  VERIFICATION_EVENT: {
+    OTP_SUB_TITLE: "To confirm the account enter the 6-digit code we sent to your email address",
+    OTP_TITLE: "Enter the OTP code",
+    RECEIVED_CODE_LABEL: "Didn't not received a code?",
+    RESEND_CODE_LABEL: "Resend",
+    CONTINUE_LABEL: "Continue",
+    WAIT_CODE_LABEL: "Please wait for the OTP",
   },
 };
