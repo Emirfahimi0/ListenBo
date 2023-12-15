@@ -1,20 +1,63 @@
 import { BottomSheetModal, BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
-import React, { FunctionComponent, RefObject, useCallback, useMemo } from "react";
+import React, { FunctionComponent, RefObject, useCallback, useMemo, useState } from "react";
 import { Platform, TouchableOpacity, View, ViewStyle } from "react-native";
-import { colorGray, colorTransparent, colorWhite, flexChild, flexRow, justifyContentStart, sw16, sw24, sw40, sw8 } from "../../styles";
+import {
+  colorGray,
+  colorTransparent,
+  colorWhite,
+  flexChild,
+  flexRow,
+  justifyContentStart,
+  sh32,
+  sh4,
+  sw16,
+  sw24,
+  sw40,
+  sw8,
+} from "../../styles";
 import { Icon } from "../Icons";
+import { RecoveryEmailForm } from "../View";
+import { LANGUAGE } from "../../constants";
+import { VerificationEvent } from "../../pages/VerificationEvent";
+
+const { FORM } = LANGUAGE;
 
 interface IBottomSheetModalComponentProps {
   bottomSheetModalRef: RefObject<TBottomModalSheetProps>;
-  children?: JSX.Element;
+  currentStep: string | undefined;
+  handleRecoveryEmail?: () => void;
+  handleVerificationEvent: () => void;
   hideModal: () => void;
+  setCurrentStep: (value: CurrentContentModal) => void;
 }
 
 export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalComponentProps> = ({
   bottomSheetModalRef,
-  children,
   hideModal,
+  handleRecoveryEmail,
+  handleVerificationEvent,
+  setCurrentStep,
+  currentStep,
 }: IBottomSheetModalComponentProps) => {
+  const [recoveryEmail, setRecoveryEmail] = useState<IUserNetwork.IRecoverEmail>({ email: "" });
+
+  let content: JSX.Element = <View />;
+
+  if (currentStep === "recoverEmail")
+    content = (
+      <RecoveryEmailForm
+        title={FORM.FORGET_PASSWORD_LABEL}
+        label={FORM.FORGET_PASSWORD_SUB_LABEL}
+        spaceToTop={sh4}
+        setRecoveryEmail={setRecoveryEmail}
+        prefixStyle={{ paddingVertical: sh32 }}
+        recoveryEmail={recoveryEmail}
+        handleRecoveryEmail={handleRecoveryEmail!}
+      />
+    );
+
+  if (currentStep === "OTPEvent") content = <VerificationEvent handleOtpEvent={handleVerificationEvent} />;
+
   const snapPoints = useMemo(() => {
     if (Platform.OS === "ios") {
       return ["93%"];
@@ -46,7 +89,7 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
             <Icon color={colorGray._1} name="arrow-back-circle" size={sw24} />
           </TouchableOpacity>
         </View>
-        {children === undefined ? null : children}
+        {content}
       </View>
     </BottomSheetModal>
   );
