@@ -1,15 +1,4 @@
-import React, {
-  ForwardRefExoticComponent,
-  ForwardedRef,
-  Fragment,
-  FunctionComponent,
-  RefAttributes,
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, FunctionComponent, useState } from "react";
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -45,9 +34,8 @@ import {
   sw8,
 } from "../../styles";
 import { LANGUAGE } from "../../constants";
-import { CustomButton, CustomSpacer, CustomTextInput, Icon, BottomSheetModalComponent } from "../../components";
+import { CustomButton, CustomSpacer, CustomTextInput, Icon } from "../../components";
 import { isPasswordValid, isValidEmail } from "../../utils";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 const { FORM } = LANGUAGE;
 
@@ -58,210 +46,188 @@ export interface IAuthFormTemplatesProps {
   handleNextPage: () => void;
   handlePreviousPage: () => void;
   loading?: boolean;
-  modalContent?: JSX.Element;
   setValue: (value: ISignUpForm) => void;
+  showModal?: () => void;
   subContent: JSX.Element;
 }
 
-export const AuthFormTemplates: ForwardRefExoticComponent<IAuthFormTemplatesProps & RefAttributes<IModalRef>> = forwardRef<
-  IModalRef,
-  IAuthFormTemplatesProps
->(
-  (
-    {
-      handlePreviousPage,
-      authForm,
-      continueLabel,
-      disableContinue,
-      handleNextPage,
-      loading,
-      modalContent,
-      subContent,
-      setValue,
-    }: IAuthFormTemplatesProps,
-    ref?: ForwardedRef<IModalRef>,
-  ) => {
-    const { email, name, password, errorEmail, errorName, errorPassword } = authForm;
-    const [visibility, setVisiblity] = useState<boolean | undefined>(undefined);
+export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
+  handlePreviousPage,
+  authForm,
+  continueLabel,
+  disableContinue,
+  handleNextPage,
+  loading,
+  showModal,
+  subContent,
+  setValue,
+}: IAuthFormTemplatesProps) => {
+  const { email, name, password, errorEmail, errorName, errorPassword } = authForm;
+  const [visibility, setVisiblity] = useState<boolean | undefined>(undefined);
 
-    const handleOnChangeEmail = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setValue({ ...authForm, ...{ email: event.nativeEvent.text } });
-    };
+  const handleOnChangeEmail = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    setValue({ ...authForm, ...{ email: event.nativeEvent.text } });
+  };
 
-    const handleOnChangeName = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setValue({ ...authForm, ...{ name: event.nativeEvent.text } });
-    };
+  const handleOnChangeName = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    setValue({ ...authForm, ...{ name: event.nativeEvent.text } });
+  };
 
-    const handleOnChangePassword = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setVisiblity(true);
-      setValue({ ...authForm, ...{ password: event.nativeEvent.text } });
-    };
+  const handleOnChangePassword = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    setVisiblity(true);
+    setValue({ ...authForm, ...{ password: event.nativeEvent.text } });
+  };
 
-    const handleOnBlurEmail = () => {
-      let error = "";
-      if (email === "") {
-        error = FORM.EMAIL_ADDRESS_EMPTY;
-        return setValue({ ...authForm, ...{ errorEmail: error } });
-      }
+  const handleOnBlurEmail = () => {
+    let error = "";
+    if (email === "") {
+      error = FORM.EMAIL_ADDRESS_EMPTY;
+      return setValue({ ...authForm, ...{ errorEmail: error } });
+    }
 
-      if (isValidEmail(email) === false) {
-        error = FORM.ERROR_INVALID_EMAIL;
-        return setValue({ ...authForm, ...{ errorEmail: error } });
-      }
+    if (isValidEmail(email) === false) {
+      error = FORM.ERROR_INVALID_EMAIL;
+      return setValue({ ...authForm, ...{ errorEmail: error } });
+    }
 
-      return setValue({ ...authForm, ...{ errorEmail: undefined } });
-    };
+    return setValue({ ...authForm, ...{ errorEmail: undefined } });
+  };
 
-    const handleOnBlurName = () => {
-      let error = "";
+  const handleOnBlurName = () => {
+    let error = "";
 
-      if (name === undefined) return;
+    if (name === undefined) return;
 
-      if (name.trim() === "") {
-        error = FORM.NAME_EMPTY;
-        return setValue({ ...authForm, ...{ errorName: error } });
-      }
-      if (name.length < 3) {
-        error = FORM.NAME_MIN;
-        return setValue({ ...authForm, ...{ errorName: error } });
-      }
-      if (name.length > 20) {
-        error = FORM.NAME_MAX;
-        return setValue({ ...authForm, ...{ errorName: error } });
-      }
+    if (name.trim() === "") {
+      error = FORM.NAME_EMPTY;
+      return setValue({ ...authForm, ...{ errorName: error } });
+    }
+    if (name.length < 3) {
+      error = FORM.NAME_MIN;
+      return setValue({ ...authForm, ...{ errorName: error } });
+    }
+    if (name.length > 20) {
+      error = FORM.NAME_MAX;
+      return setValue({ ...authForm, ...{ errorName: error } });
+    }
 
-      return setValue({ ...authForm, ...{ errorName: undefined } });
-    };
+    return setValue({ ...authForm, ...{ errorName: undefined } });
+  };
 
-    const handleOnBlurPassword = () => {
-      let error = "";
+  const handleOnBlurPassword = () => {
+    let error = "";
 
-      if (password === "") {
-        error = FORM.PASSWORD_EMPTY;
-        return setValue({ ...authForm, ...{ errorPassword: error } });
-      }
-      if (isPasswordValid(password) === false) {
-        error = FORM.PASSWORD_INVALID;
-        return setValue({ ...authForm, ...{ errorPassword: error } });
-      }
+    if (password === "") {
+      error = FORM.PASSWORD_EMPTY;
+      return setValue({ ...authForm, ...{ errorPassword: error } });
+    }
+    if (isPasswordValid(password) === false) {
+      error = FORM.PASSWORD_INVALID;
+      return setValue({ ...authForm, ...{ errorPassword: error } });
+    }
 
-      return setValue({ ...authForm, ...{ errorPassword: undefined } });
-    };
+    return setValue({ ...authForm, ...{ errorPassword: undefined } });
+  };
 
-    const handleOnFocusEmail = () => {
-      setValue({ ...authForm, ...{ errorEmail: undefined } });
-    };
-    const handleOnFocusName = () => {
-      setValue({ ...authForm, ...{ errorName: undefined } });
-    };
-    const handleOnFocusPassword = () => {
-      setValue({ ...authForm, ...{ errorPassword: undefined } });
-    };
+  const handleOnFocusEmail = () => {
+    setValue({ ...authForm, ...{ errorEmail: undefined } });
+  };
+  const handleOnFocusName = () => {
+    setValue({ ...authForm, ...{ errorName: undefined } });
+  };
+  const handleOnFocusPassword = () => {
+    setValue({ ...authForm, ...{ errorPassword: undefined } });
+  };
 
-    const setSecureText = () => {
-      return setVisiblity(!visibility);
-    };
+  const setSecureText = () => {
+    return setVisiblity(!visibility);
+  };
 
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const openModal = () => {
+    if (showModal) showModal();
+    else return;
+  };
 
-    const showModal = useCallback(() => {
-      bottomSheetModalRef.current?.present();
-    }, []);
-
-    const hideModal = useCallback(() => {
-      bottomSheetModalRef.current?.dismiss();
-    }, []);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        showModal,
-        hideModal,
-      }),
-      [showModal, hideModal],
-    );
-    return (
-      <View style={backgroundStyle}>
-        <SafeAreaView style={{ paddingVertical: sh10 }}>
-          <View style={{ ...flexRow, ...justifyContentStart }}>
-            <TouchableOpacity style={arrowStyle} onPress={handlePreviousPage}>
-              <Icon color={colorWhite._3} name="ios-arrow-left" size={sw20} strokeWidth={sw20} />
-            </TouchableOpacity>
-          </View>
-
-          <View style={centerHV}>
-            <Image source={require("../../assets/images/login.png")} style={{ height: sh152, width: sw152 }} />
-          </View>
-        </SafeAreaView>
-        <View style={borderBottomContainer}>
-          <CustomTextInput
-            label={FORM.EMAIL_ADDRESS_LABEL}
-            labelHolder={FORM.ENTER_EMAIL_LABEL}
-            error={errorEmail}
-            value={email}
-            onChange={handleOnChangeEmail}
-            onBlur={handleOnBlurEmail}
-            onFocus={handleOnFocusEmail}
-            keyboardType="email-address"
-            containerStyle={{ paddingVertical: sh4 }}
-          />
-          {name === undefined ? null : (
-            <CustomTextInput
-              label={FORM.NAME_LABEL}
-              onChange={handleOnChangeName}
-              onBlur={handleOnBlurName}
-              error={errorName}
-              onFocus={handleOnFocusName}
-              value={name}
-              labelHolder={FORM.NAME_PLACEHOLDER}
-              containerStyle={{ paddingVertical: sh4 }}
-            />
-          )}
-
-          <CustomTextInput
-            autoCapitalize="none"
-            containerStyle={{ paddingVertical: sh4 }}
-            error={errorPassword}
-            label={FORM.PASSWORDS_LABEL}
-            labelHolder={FORM.PASSWORD_PLACEHOLDER}
-            onBlur={handleOnBlurPassword}
-            onChange={handleOnChangePassword}
-            onFocus={handleOnFocusPassword}
-            secureTextEntry={visibility}
-            setVisible={setSecureText}
-            value={password}
-            visibilityText={visibility}
-          />
-          <View style={{ paddingVertical: sh16 }}>
-            {name !== undefined ? null : (
-              <Pressable disabled={loading} onPress={showModal}>
-                <View style={{ ...alignItemsEnd, paddingRight: sw8 }}>
-                  <Text style={fs12BoldGray1}>{FORM.FORGOT_PASSWORD_LABEL}</Text>
-                </View>
-              </Pressable>
-            )}
-          </View>
-          <Fragment>
-            <View style={alignSelfCenter}>
-              <CustomButton
-                onPress={handleNextPage}
-                withDebounce={true}
-                text={continueLabel}
-                buttonStyle={{ borderRadius: sw16 }}
-                textStyle={fsAlignCenter}
-                disabled={disableContinue || loading === true}
-                loading={loading}
-              />
-            </View>
-            <CustomSpacer space={sh4} />
-            {subContent}
-          </Fragment>
+  return (
+    <View style={backgroundStyle}>
+      <SafeAreaView style={{ paddingVertical: sh10 }}>
+        <View style={{ ...flexRow, ...justifyContentStart }}>
+          <TouchableOpacity style={arrowStyle} onPress={handlePreviousPage}>
+            <Icon color={colorWhite._3} name="ios-arrow-left" size={sw20} strokeWidth={sw20} />
+          </TouchableOpacity>
         </View>
-        <BottomSheetModalComponent bottomSheetModalRef={bottomSheetModalRef} hideModal={hideModal} children={modalContent} />
+
+        <View style={centerHV}>
+          <Image source={require("../../assets/images/login.png")} style={{ height: sh152, width: sw152 }} />
+        </View>
+      </SafeAreaView>
+      <View style={borderBottomContainer}>
+        <CustomTextInput
+          label={FORM.EMAIL_ADDRESS_LABEL}
+          labelHolder={FORM.ENTER_EMAIL_LABEL}
+          error={errorEmail}
+          value={email}
+          onChange={handleOnChangeEmail}
+          onBlur={handleOnBlurEmail}
+          onFocus={handleOnFocusEmail}
+          keyboardType="email-address"
+          containerStyle={{ paddingVertical: sh4 }}
+        />
+        {name === undefined ? null : (
+          <CustomTextInput
+            label={FORM.NAME_LABEL}
+            onChange={handleOnChangeName}
+            onBlur={handleOnBlurName}
+            error={errorName}
+            onFocus={handleOnFocusName}
+            value={name}
+            labelHolder={FORM.NAME_PLACEHOLDER}
+            containerStyle={{ paddingVertical: sh4 }}
+          />
+        )}
+
+        <CustomTextInput
+          autoCapitalize="none"
+          containerStyle={{ paddingVertical: sh4 }}
+          error={errorPassword}
+          label={FORM.PASSWORDS_LABEL}
+          labelHolder={FORM.PASSWORD_PLACEHOLDER}
+          onBlur={handleOnBlurPassword}
+          onChange={handleOnChangePassword}
+          onFocus={handleOnFocusPassword}
+          secureTextEntry={visibility}
+          setVisible={setSecureText}
+          value={password}
+          visibilityText={visibility}
+        />
+        <View style={{ paddingVertical: sh16 }}>
+          {name !== undefined ? null : (
+            <Pressable disabled={loading} onPress={openModal}>
+              <View style={{ ...alignItemsEnd, paddingRight: sw8 }}>
+                <Text style={fs12BoldGray1}>{FORM.FORGOT_PASSWORD_LABEL}</Text>
+              </View>
+            </Pressable>
+          )}
+        </View>
+        <Fragment>
+          <View style={alignSelfCenter}>
+            <CustomButton
+              onPress={handleNextPage}
+              withDebounce={true}
+              text={continueLabel}
+              buttonStyle={{ borderRadius: sw16 }}
+              textStyle={fsAlignCenter}
+              disabled={disableContinue || loading === true}
+              loading={loading}
+            />
+          </View>
+          <CustomSpacer space={sh4} />
+          {subContent}
+        </Fragment>
       </View>
-    );
-  },
-);
+    </View>
+  );
+};
 
 const backgroundStyle: ViewStyle = {
   backgroundColor: colorRose._1,
@@ -270,8 +236,6 @@ const backgroundStyle: ViewStyle = {
 
 const arrowStyle: ViewStyle = {
   padding: sw12,
-  // borderTopRightRadius: sw8,
-  // borderBottomLeftRadius: sw8,
   marginLeft: sw4,
   marginTop: sw4,
 };
