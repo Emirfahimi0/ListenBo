@@ -1,9 +1,8 @@
-import React, { Fragment, FunctionComponent, useRef, useState } from "react";
-
+import React, { Fragment, FunctionComponent, useCallback, useRef, useState } from "react";
 import { AuthFormTemplates } from "../templates";
 import { LANGUAGE } from "../constants";
-import { LabelLink } from "../components";
-import { VerificationEvent } from "./VerificationEvent";
+import { BottomSheetModalComponent, LabelLink } from "../components";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export interface ISignUpProps {
   navigation: IStackNavigationProp;
@@ -22,8 +21,16 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
   });
   const { email, name, password, errorEmail, errorName, errorPassword } = signUp;
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
+  const [currentStep, setCurrentStep] = useState<CurrentContentModal | undefined>("OTPEvent");
+  const bottomSheetModalRef = useRef<BottomSheetModal | null>(null);
 
-  const modalRef = useRef<IModalRef | null>(null);
+  const showModal = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const hideModal = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
 
   const handleSignUp = () => {
     let request: IUserNetwork.IRequestCreateAccount = {
@@ -33,7 +40,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
     };
 
     console.log(request);
-    modalRef.current!.showModal();
+    showModal();
     // send server here
     setLoading(true);
   };
@@ -56,11 +63,9 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
     />
   );
 
-  const handleVerification = () => {
+  const handleVerificationEvent = () => {
     console.log("varification");
   };
-
-  let content: JSX.Element = <VerificationEvent handleOtpEvent={handleVerification} />;
 
   return (
     <Fragment>
@@ -73,8 +78,13 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         loading={loading}
         continueLabel={FORM.SIGN_UP_LABEL}
         subContent={appLink}
-        modalContent={content}
-        ref={modalRef}
+      />
+      <BottomSheetModalComponent
+        bottomSheetModalRef={bottomSheetModalRef}
+        hideModal={hideModal}
+        handleVerificationEvent={handleVerificationEvent}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
       />
     </Fragment>
   );
