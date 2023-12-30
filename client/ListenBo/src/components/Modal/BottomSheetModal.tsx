@@ -19,44 +19,41 @@ import { Icon } from "../Icons";
 import { RecoveryEmailForm } from "../View";
 import { LANGUAGE } from "../../constants";
 import { VerificationEvent } from "../../pages/VerificationEvent";
+import { updateCurrentContent } from "../../store/global";
 
 const { FORM } = LANGUAGE;
 
 interface IBottomSheetModalComponentProps {
   bottomSheetModalRef: RefObject<TBottomModalSheetProps>;
-  currentStep: string | undefined;
-  handleRecoveryEmail?: () => void;
-  handleVerificationEvent: () => void;
+  currentContent?: CurrentContentModal[];
+  currentStep: CurrentContentModal | undefined;
+  handleRecoveryEmail?: (email: string) => void;
+  handleReVerified?: (userId: string) => void;
+  handleVerificationEvent?: (token: string) => void;
   hideModal: () => void;
-  setCurrentStep: (value: CurrentContentModal) => void;
+  setCurrentStep: (value: CurrentContentModal | undefined) => void;
 }
 
 export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalComponentProps> = ({
   bottomSheetModalRef,
   hideModal,
   handleRecoveryEmail,
+  handleReVerified,
   handleVerificationEvent,
   setCurrentStep,
+  currentContent,
   currentStep,
 }: IBottomSheetModalComponentProps) => {
   const [recoveryEmail, setRecoveryEmail] = useState<IUserNetwork.IRecoverEmail>({ email: "" });
+  const { email } = recoveryEmail;
 
   let content: JSX.Element = <View />;
 
-  if (currentStep === "recoverEmail")
-    content = (
-      <RecoveryEmailForm
-        title={FORM.FORGET_PASSWORD_LABEL}
-        label={FORM.FORGET_PASSWORD_SUB_LABEL}
-        spaceToTop={sh4}
-        setRecoveryEmail={setRecoveryEmail}
-        prefixStyle={{ paddingVertical: sh32 }}
-        recoveryEmail={recoveryEmail}
-        handleRecoveryEmail={handleRecoveryEmail!}
-      />
-    );
-
-  if (currentStep === "OTPEvent") content = <VerificationEvent handleOtpEvent={handleVerificationEvent} />;
+  const handleForgotPassword = () => {
+    if (handleRecoveryEmail) {
+      handleRecoveryEmail(email);
+    }
+  };
 
   const snapPoints = useMemo(() => {
     if (Platform.OS === "ios") {
@@ -73,6 +70,34 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
     [],
   );
 
+  const closeModal = () => {
+    if (currentContent === undefined) return;
+    if (currentContent.length === 1 && currentContent[1] === "OTPEvent") {
+      updateCurrentContent(["RecoverEmail"]);
+      setCurrentStep("RecoverEmail");
+    } else {
+      updateCurrentContent([]);
+      setCurrentStep(undefined);
+      hideModal();
+    }
+  };
+
+  if (currentStep === "RecoverEmail")
+    content = (
+      <RecoveryEmailForm
+        title={FORM.FORGET_PASSWORD_LABEL}
+        label={FORM.FORGET_PASSWORD_SUB_LABEL}
+        spaceToTop={sh4}
+        setRecoveryEmail={setRecoveryEmail}
+        prefixStyle={{ paddingVertical: sh32 }}
+        recoveryEmail={recoveryEmail}
+        handleRecoveryEmail={handleForgotPassword}
+      />
+    );
+
+  if (currentStep === "OTPEvent" && handleVerificationEvent !== undefined && handleReVerified !== undefined)
+    content = <VerificationEvent handleOtpEvent={handleVerificationEvent} handleReVerfication={handleReVerified} />;
+
   return (
     <BottomSheetModal
       backgroundStyle={backgroundStyle}
@@ -85,8 +110,8 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
       enablePanDownToClose={false}>
       <View style={modalStyle}>
         <View style={{ ...flexRow, ...justifyContentStart }}>
-          <TouchableOpacity style={arrowStyle} onPress={hideModal}>
-            <Icon color={colorGray._1} name="arrow-back-circle" size={sw24} />
+          <TouchableOpacity style={arrowStyle} onPress={closeModal}>
+            <Icon color={colorGray._1} name="close-circle" size={sw24} />
           </TouchableOpacity>
         </View>
         {content}
