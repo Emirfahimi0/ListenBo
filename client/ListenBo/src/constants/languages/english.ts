@@ -36,5 +36,6 @@ export const LANGUAGE = {
     RESEND_CODE_LABEL: "Resend",
     CONTINUE_LABEL: "Continue",
     WAIT_CODE_LABEL: "Please wait for the OTP",
+    VERIFYING_EMAIL: "Verifying your email",
   },
 };
