@@ -9,6 +9,8 @@ import {
   NativeSyntheticEvent,
   TextInputFocusEventData,
   Pressable,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import {
   alignItemsEnd,
@@ -149,8 +151,8 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   };
 
   return (
-    <View style={backgroundStyle}>
-      <SafeAreaView style={{ paddingVertical: sh10 }}>
+    <SafeAreaView style={backgroundStyle}>
+      <View style={{ paddingVertical: sh10 }}>
         <View style={{ ...flexRow, ...justifyContentStart }}>
           <TouchableOpacity style={arrowStyle} onPress={handlePreviousPage}>
             <Icon color={colorWhite._3} name="ios-arrow-left" size={sw20} strokeWidth={sw20} />
@@ -160,8 +162,12 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
         <View style={centerHV}>
           <Image source={require("../../assets/images/login.png")} style={{ height: sh152, width: sw152 }} />
         </View>
-      </SafeAreaView>
-      <View style={borderBottomContainer}>
+      </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={100}
+        style={borderBottomContainer}>
         <CustomTextInput
           label={FORM.EMAIL_ADDRESS_LABEL}
           labelHolder={FORM.ENTER_EMAIL_LABEL}
@@ -224,8 +230,8 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           <CustomSpacer space={sh4} />
           {subContent}
         </Fragment>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
