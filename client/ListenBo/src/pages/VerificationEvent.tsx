@@ -8,7 +8,6 @@ import {
   flexChild,
   flexRow,
   flexRowSbSb,
-  fs10BoldGray1,
   fs10BoldRose1,
   fs12BoldGray1,
   fs12BoldOrange2,
@@ -31,7 +30,7 @@ import {
   sw8,
 } from "../styles";
 import { LANGUAGE } from "../constants";
-import { CustomSpacer, Icon, LabelLink } from "../components";
+import { CustomSpacer, Icon, LabelLink, Loading } from "../components";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { CircleSnail } from "react-native-progress";
 import { useCountDown } from "../hooks";
@@ -39,7 +38,8 @@ import { useCountDown } from "../hooks";
 const { VERIFICATION_EVENT } = LANGUAGE;
 
 interface IVerificationEventProps {
-  handleOtpEvent?: () => void;
+  handleOtpEvent: (token: string) => boolean | void;
+  handleReVerfication: (userId: string) => void;
 }
 
 const initialValue: IOTPCode = {
@@ -48,22 +48,25 @@ const initialValue: IOTPCode = {
   isSuccess: false,
 };
 
-export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({}: IVerificationEventProps) => {
+export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({
+  handleOtpEvent,
+  handleReVerfication,
+}: IVerificationEventProps) => {
   const [otpCode, setOtpCode] = useState<IOTPCode>(initialValue);
   const initialCountDown = 10;
   const { seconds, startCountDown } = useCountDown(initialCountDown);
   const { code, error, isSuccess } = otpCode;
 
   const handleOnCodeFilled = async (value: string) => {
-    // if (value !== "123456") return setOtpCode({ ...otpCode, error: "Your OTP Code is not correct." });
-    // request to the server with useEffect once the success is true,
-    return setOtpCode({ ...otpCode, code: value, isSuccess: true });
+    const isVerified = handleOtpEvent(value);
+    return setOtpCode({ ...otpCode, code: value, isSuccess: isVerified === undefined ? false : isVerified });
   };
 
   // use onCodeChanged of the module, every-time the code.length === 1 remove error styles.
 
   const handleResendCode = async () => {
     if (seconds === 0) startCountDown(initialCountDown);
+    handleReVerfication(code!);
     return setOtpCode(initialValue);
   };
 
@@ -75,7 +78,7 @@ export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({}
   };
 
   useEffect(() => {
-    if (isSuccess === true) console.log("yep, success", code);
+    if (isSuccess === true) return console.log("true");
   }, [isSuccess]);
 
   const defaultInputStyle: TextStyle = {
@@ -92,7 +95,7 @@ export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({}
       <View style={{ ...flexChild, paddingHorizontal: sw20 }}>
         {isSuccess === true ? (
           <View style={{ ...flexChild, ...centerHV }}>
-            <Text style={fs16BoldGray1}>Verifying your email</Text>
+            <Text style={fs16BoldGray1}>{VERIFICATION_EVENT.VERIFYING_EMAIL}</Text>
             <CustomSpacer space={sh12} />
             <CircleSnail color={colorGreen._1} size={sw64} thickness={sw4} animating={true} />
           </View>
@@ -125,13 +128,7 @@ export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({}
                 </View>
               )}
 
-              {seconds > 0 && error === undefined ? (
-                <Fragment>
-                  <CircleSnail color={colorGreen._1} size={sw16} thickness={sw2} />
-                  <CustomSpacer isHorizontal={true} space={sw8} />
-                  <Text style={fs10BoldGray1}>{VERIFICATION_EVENT.WAIT_CODE_LABEL}</Text>
-                </Fragment>
-              ) : null}
+              {seconds > 0 && error === undefined ? <Loading secondary={false} label={VERIFICATION_EVENT.VERIFYING_EMAIL} /> : null}
             </View>
             <CustomSpacer space={sh12} />
             <View style={flexRowSbSb}>
