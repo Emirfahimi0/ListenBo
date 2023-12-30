@@ -13,10 +13,23 @@ declare namespace IUserNetwork {
     error?: string;
   }
 
-  interface IRequestCreateAccount {
+  interface ForgotPassword {
+    email: string;
+  }
+
+  interface RequestCreateAccount {
     name?: string;
     email: string;
     password: string;
+  }
+
+  interface EmailVerifyRequest {
+    userId: string;
+    token: string;
+  }
+
+  interface ReVerifyEmail {
+    userId: string;
   }
 }
 
@@ -24,4 +37,14 @@ interface IOTPCode {
   code: string | undefined;
   error: string | undefined;
   isSuccess: boolean;
+}
+
+interface newUser {
+  createdAt: string;
+  email: string;
+  name: string;
+  token: string[];
+  updatedAt: string;
+  userId: userId;
+  verified: boolean;
 }
