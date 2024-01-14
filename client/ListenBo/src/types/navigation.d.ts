@@ -7,7 +7,14 @@ declare global {
     SignUp: undefined;
   }
 
+  interface ITabNavigationParamsList extends ParamListBase {
+    Profile: undefined;
+    Home: undefined;
+    Upload: undefined;
+  }
+
   type IStackNavigationProp = import("@react-navigation/stack").StackNavigationProp<INavigationParamsList>;
+  type ITabNavigationProp = import("@react-navigation/bottom-tabs").BottomTabNavigationProp<ITabNavigationParamsList>;
 
   type TPageType = "OnBoarding" | "SignUp" | "SignIn";
 }
