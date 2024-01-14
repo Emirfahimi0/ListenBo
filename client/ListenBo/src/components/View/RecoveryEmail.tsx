@@ -1,5 +1,14 @@
 import React, { Fragment, FunctionComponent } from "react";
-import { NativeSyntheticEvent, Text, TextInputFocusEventData, View, ViewStyle } from "react-native";
+import {
+  KeyboardAvoidingView,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+  Text,
+  TextInputFocusEventData,
+  View,
+  ViewStyle,
+} from "react-native";
 import {
   sh4,
   sw30,
@@ -77,35 +86,39 @@ export const RecoveryEmailForm: FunctionComponent<IRecoveryEmailFormProps> = ({
 
   return (
     <Fragment>
-      <View style={{ paddingHorizontal: sw30, ...flexChild, ...centerVertical }}>
-        <View style={defaultContainerStyle}>
-          <View style={{ paddingHorizontal: sw4, paddingBottom: spaceToInput === undefined ? sh24 : spaceToInput }}>
-            <Text style={fs20BoldBlack2}>{title}</Text>
-            <Text style={fs12BoldGray1}>{label}</Text>
-          </View>
-
-          <CustomTextInput
-            label={FORM.EMAIL_ADDRESS_LABEL}
-            labelHolder={FORM.ENTER_EMAIL_LABEL}
-            error={error}
-            value={email}
-            onChange={handleOnChangeEmail}
-            onBlur={handleOnBlurEmail}
-            onFocus={handleOnFocusEmail}
-            keyboardType="email-address"
-            containerStyle={{ paddingVertical: sh4, borderRadius: sw10 }}
+      <ScrollView style={flexChild}>
+        <View style={{ paddingHorizontal: sw30, ...flexChild, ...centerVertical }}>
+          <KeyboardAvoidingView
+            style={defaultContainerStyle}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={100}>
+            <View style={{ paddingHorizontal: sw4, paddingBottom: spaceToInput === undefined ? sh24 : spaceToInput }}>
+              <Text style={fs20BoldBlack2}>{title}</Text>
+              <Text style={fs12BoldGray1}>{label}</Text>
+            </View>
+            <CustomTextInput
+              label={FORM.EMAIL_ADDRESS_LABEL}
+              labelHolder={FORM.ENTER_EMAIL_LABEL}
+              error={error}
+              value={email}
+              onChange={handleOnChangeEmail}
+              onBlur={handleOnBlurEmail}
+              onFocus={handleOnFocusEmail}
+              keyboardType="email-address"
+              containerStyle={{ paddingVertical: sh4, borderRadius: sw10 }}
+            />
+          </KeyboardAvoidingView>
+          <CustomButton
+            onPress={handleRecoveryEmail}
+            disabled={disable}
+            icon={"ios-arrow-forward"}
+            buttonStyle={buttonStyle}
+            text={FORM.CONTINUE_LABEL}
+            loading={false}
+            withDebounce={true}
           />
         </View>
-        <CustomButton
-          onPress={handleRecoveryEmail}
-          disabled={disable}
-          icon={"ios-arrow-forward"}
-          buttonStyle={buttonStyle}
-          text={FORM.CONTINUE_LABEL}
-          loading={false}
-          withDebounce={true}
-        />
-      </View>
+      </ScrollView>
     </Fragment>
   );
 };
