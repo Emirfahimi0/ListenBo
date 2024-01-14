@@ -11,6 +11,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from "react-native";
 import {
   alignItemsEnd,
@@ -163,74 +164,72 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           <Image source={require("../../assets/images/login.png")} style={{ height: sh152, width: sw152 }} />
         </View>
       </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={100}
-        style={borderBottomContainer}>
-        <CustomTextInput
-          label={FORM.EMAIL_ADDRESS_LABEL}
-          labelHolder={FORM.ENTER_EMAIL_LABEL}
-          error={errorEmail}
-          value={email}
-          onChange={handleOnChangeEmail}
-          onBlur={handleOnBlurEmail}
-          onFocus={handleOnFocusEmail}
-          keyboardType="email-address"
-          containerStyle={{ paddingVertical: sh4 }}
-        />
-        {name === undefined ? null : (
+      <ScrollView style={borderBottomContainer}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={100}>
           <CustomTextInput
-            label={FORM.NAME_LABEL}
-            onChange={handleOnChangeName}
-            onBlur={handleOnBlurName}
-            error={errorName}
-            onFocus={handleOnFocusName}
-            value={name}
-            labelHolder={FORM.NAME_PLACEHOLDER}
+            label={FORM.EMAIL_ADDRESS_LABEL}
+            labelHolder={FORM.ENTER_EMAIL_LABEL}
+            error={errorEmail}
+            value={email}
+            onChange={handleOnChangeEmail}
+            onBlur={handleOnBlurEmail}
+            onFocus={handleOnFocusEmail}
+            keyboardType="email-address"
             containerStyle={{ paddingVertical: sh4 }}
           />
-        )}
-
-        <CustomTextInput
-          autoCapitalize="none"
-          containerStyle={{ paddingVertical: sh4 }}
-          error={errorPassword}
-          label={FORM.PASSWORDS_LABEL}
-          labelHolder={FORM.PASSWORD_PLACEHOLDER}
-          onBlur={handleOnBlurPassword}
-          onChange={handleOnChangePassword}
-          onFocus={handleOnFocusPassword}
-          secureTextEntry={visibility}
-          setVisible={setSecureText}
-          value={password}
-          visibilityText={visibility}
-        />
-        <View style={{ paddingVertical: sh16 }}>
-          {name !== undefined ? null : (
-            <Pressable disabled={loading} onPress={openModal}>
-              <View style={{ ...alignItemsEnd, paddingRight: sw8 }}>
-                <Text style={fs12BoldGray1}>{FORM.FORGOT_PASSWORD_LABEL}</Text>
-              </View>
-            </Pressable>
-          )}
-        </View>
-        <Fragment>
-          <View style={alignSelfCenter}>
-            <CustomButton
-              onPress={handleNextPage}
-              withDebounce={true}
-              text={continueLabel}
-              buttonStyle={{ borderRadius: sw16 }}
-              textStyle={fsAlignCenter}
-              disabled={disableContinue || loading === true}
-              loading={loading}
+          {name === undefined ? null : (
+            <CustomTextInput
+              label={FORM.NAME_LABEL}
+              onChange={handleOnChangeName}
+              onBlur={handleOnBlurName}
+              error={errorName}
+              onFocus={handleOnFocusName}
+              value={name}
+              labelHolder={FORM.NAME_PLACEHOLDER}
+              containerStyle={{ paddingVertical: sh4 }}
             />
+          )}
+
+          <CustomTextInput
+            autoCapitalize="none"
+            containerStyle={{ paddingVertical: sh4 }}
+            error={errorPassword}
+            label={FORM.PASSWORDS_LABEL}
+            labelHolder={FORM.PASSWORD_PLACEHOLDER}
+            onBlur={handleOnBlurPassword}
+            onChange={handleOnChangePassword}
+            onFocus={handleOnFocusPassword}
+            secureTextEntry={visibility}
+            setVisible={setSecureText}
+            value={password}
+            visibilityText={visibility}
+          />
+          <View style={{ paddingVertical: sh16 }}>
+            {name !== undefined ? null : (
+              <Pressable disabled={loading} onPress={openModal}>
+                <View style={{ ...alignItemsEnd, paddingRight: sw8 }}>
+                  <Text style={fs12BoldGray1}>{FORM.FORGOT_PASSWORD_LABEL}</Text>
+                </View>
+              </Pressable>
+            )}
           </View>
-          <CustomSpacer space={sh4} />
-          {subContent}
-        </Fragment>
-      </KeyboardAvoidingView>
+          <Fragment>
+            <View style={alignSelfCenter}>
+              <CustomButton
+                onPress={handleNextPage}
+                withDebounce={true}
+                text={continueLabel}
+                buttonStyle={{ borderRadius: sw16 }}
+                textStyle={fsAlignCenter}
+                disabled={disableContinue || loading === true}
+                loading={loading}
+              />
+            </View>
+            <CustomSpacer space={sh4} />
+            {subContent}
+          </Fragment>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
