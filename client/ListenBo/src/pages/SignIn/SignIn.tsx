@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { Fragment, FunctionComponent, useCallback, useRef, useState } from "react";
 
 import { LANGUAGE } from "../../constants";
-import { updateProfile } from "../../store/auth";
+import { updateLoggedIn, updateProfile } from "../../store/auth";
 export interface ISignInProps {
   navigation: IStackNavigationProp;
 }
@@ -26,7 +26,6 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
   const dispatch = useDispatch();
 
-  // const countDown = useSelector(globalState).countDown;
   const currentContent = useSelector(globalState).currentContent;
 
   const bottomSheetModalRef = useRef<BottomSheetModal | null>(null);
@@ -51,8 +50,7 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
 
       if (response.code === "success" && response.data !== null) {
         const { profile } = response.data;
-        dispatch(updateProfile(profile));
-        // navigate to dashboard -> private routes
+        dispatch(updateProfile(profile), updateLoggedIn(true));
       } else {
         return Alert.alert("Unexpected response from the server");
       }
