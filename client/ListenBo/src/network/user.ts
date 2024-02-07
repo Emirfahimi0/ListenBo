@@ -3,6 +3,7 @@ import { client } from "./client";
 
 interface LogInResponse {
   profile: IUserProfile | null;
+  jwtToken: string;
 }
 
 interface createdUserResponse {
@@ -32,4 +33,12 @@ export const reVerifyAccountByEmail = requestHandler<IUserNetwork.ReVerifyEmail,
 
 export const forgotPassword = requestHandler<IUserNetwork.ForgotPassword, ReVerificationResponse>((email) =>
   client.post("/forget-password", email),
+);
+
+export const authorizedUser = requestHandler<IUserNetwork.JwtTokenRequest, IUserProfile>((token) =>
+  client.get("/authorized", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }),
 );

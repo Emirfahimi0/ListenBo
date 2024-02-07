@@ -31,6 +31,10 @@ declare namespace IUserNetwork {
   interface ReVerifyEmail {
     userId: string;
   }
+
+  interface JwtTokenRequest {
+    token: string;
+  }
 }
 
 interface IOTPCode {

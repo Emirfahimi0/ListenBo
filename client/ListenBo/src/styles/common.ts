@@ -61,22 +61,3 @@ export const zIndexTop = { zIndex: 1 } as const;
 export const noHorizontalPadding = { paddingLeft: 0, paddingRight: 0 } as const;
 export const rowCenterVertical = { ...centerVertical, ...flexRow } as const;
 
-export const border = (color: string, width: number, radius?: number, style?: "solid" | "dotted" | "dashed") => ({
-  borderColor: color,
-  borderRadius: radius,
-  borderStyle: style !== undefined ? style : "solid",
-  borderWidth: width,
-});
-
-export const circle = (height: number, backgroundColor?: string) => ({
-  height: height,
-  width: height,
-  borderRadius: height / 2,
-  backgroundColor: backgroundColor,
-});
-
-export const circleBorder = (height: number, borderWidth: number, borderColor: string, backgroundColor?: string) => ({
-  ...circle(height, backgroundColor),
-  borderWidth: borderWidth,
-  borderColor: borderColor,
-});

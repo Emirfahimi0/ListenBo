@@ -9,6 +9,7 @@ import React, { Fragment, FunctionComponent, useCallback, useRef, useState } fro
 
 import { LANGUAGE } from "../../constants";
 import { updateLoggedIn, updateProfile } from "../../store/auth";
+import { KEYS, storeStorage } from "../../utils";
 export interface ISignInProps {
   navigation: IStackNavigationProp;
 }
@@ -42,6 +43,8 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
     try {
       setLoading(true);
       const response = await logIn({ email, password });
+
+      console.log("response", response);
       if (response.code === "error") {
         const { data } = response.error as any;
 
@@ -49,13 +52,16 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
       }
 
       if (response.code === "success" && response.data !== null) {
-        const { profile } = response.data;
+        const { profile, jwtToken } = response.data;
+
+        await storeStorage(KEYS.AUTH_TOKEN, jwtToken);
+
         dispatch(updateProfile(profile), updateLoggedIn(true));
       } else {
         return Alert.alert("Unexpected response from the server");
       }
     } catch (error) {
-      return Alert.alert(`unknown error occurred ${error}`);
+      return Alert.alert(`unknown error occurred: ${error}`);
     } finally {
       setLoading(false);
     }
