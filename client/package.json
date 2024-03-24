@@ -5,7 +5,10 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios:device": "npx react-native run-ios --device",
+    "ios:14": "react-native run-ios --simulator=\"iPhone 14\"",
     "start": "react-native start",
+    "install:pods": "cd ios && pod install",
     "clean-gradle": "cd android ; ./gradlew clean",
     "test": "jest",
     "lint": "eslint . --config ./.eslintrc.json --ext .js,.jsx,.ts,.tsx",

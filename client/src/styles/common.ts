@@ -1,4 +1,4 @@
-import { colorBlack, colorGray, colorTransparent } from "./color";
+import { colorTransparent } from "./color";
 
 export const alignFlexStart = { alignItems: "flex-start" } as const;
 export const alignItemsEnd = { alignItems: "flex-end" } as const;
@@ -44,12 +44,7 @@ export const fullWidth = { width: "100%" } as const;
 export const fullHW = { ...fullHeight, ...fullWidth } as const;
 export const autoWidth = { width: "auto" } as const;
 export const autoHeight = { height: "auto" } as const;
-export const borderBottomBlue2 = { borderBottomWidth: 1, borderBottomColor: colorBlack._2 } as const;
-export const borderBottomBlue3 = { borderBottomWidth: 1, borderBottomColor: colorBlack._3 } as const;
 
-export const borderLeftBlue2 = { borderLeftWidth: 1, borderLeftColor: colorGray._2 } as const;
-export const borderLeftGray3 = { borderLeftWidth: 1, borderLeftColor: colorGray._3 } as const;
-export const borderLeftBlack2 = { borderLeftWidth: 1, borderLeftColor: colorBlack._2 } as const;
 export const noBorderBottom = { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } as const;
 export const borderDashed = { borderStyle: "dashed" } as const;
 export const noBorder = { borderWidth: 0 } as const;
@@ -61,3 +56,9 @@ export const zIndexTop = { zIndex: 1 } as const;
 export const noHorizontalPadding = { paddingLeft: 0, paddingRight: 0 } as const;
 export const rowCenterVertical = { ...centerVertical, ...flexRow } as const;
 
+export const border = (color: string, width: number, radius?: number, style?: "solid" | "dotted" | "dashed") => ({
+  borderColor: color,
+  borderRadius: radius,
+  borderStyle: style !== undefined ? style : "solid",
+  borderWidth: width,
+});
