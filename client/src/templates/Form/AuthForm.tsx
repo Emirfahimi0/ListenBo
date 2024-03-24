@@ -1,6 +1,5 @@
 import React, { Fragment, FunctionComponent, useState } from "react";
 import {
-  SafeAreaView,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -152,7 +151,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <View style={backgroundStyle}>
       <View style={{ paddingVertical: sh10 }}>
         <View style={{ ...flexRow, ...justifyContentStart }}>
           <TouchableOpacity style={arrowStyle} onPress={handlePreviousPage}>
@@ -230,7 +229,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
           </Fragment>
         </KeyboardAvoidingView>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

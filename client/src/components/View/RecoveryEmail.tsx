@@ -28,6 +28,7 @@ import { CustomTextInput } from "../Input";
 import { LANGUAGE } from "../../constants";
 import { CustomButton } from "../Button";
 import { isValidEmail } from "../../utils";
+import { CustomSpacer } from "../spacer";
 
 const { FORM } = LANGUAGE;
 
@@ -107,16 +108,17 @@ export const RecoveryEmailForm: FunctionComponent<IRecoveryEmailFormProps> = ({
               keyboardType="email-address"
               containerStyle={{ paddingVertical: sh4, borderRadius: sw10 }}
             />
+            <CustomSpacer space={sh18} />
+            <CustomButton
+              onPress={handleRecoveryEmail}
+              disabled={disable}
+              icon={"ios-arrow-forward"}
+              buttonStyle={buttonStyle}
+              text={FORM.CONTINUE_LABEL}
+              loading={false}
+              withDebounce={true}
+            />
           </KeyboardAvoidingView>
-          <CustomButton
-            onPress={handleRecoveryEmail}
-            disabled={disable}
-            icon={"ios-arrow-forward"}
-            buttonStyle={buttonStyle}
-            text={FORM.CONTINUE_LABEL}
-            loading={false}
-            withDebounce={true}
-          />
         </View>
       </ScrollView>
     </Fragment>

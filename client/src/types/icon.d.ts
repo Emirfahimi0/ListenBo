@@ -1,4 +1,4 @@
-export type IconNames = 
+export type IconNames =
   | "alert-outline"
   | "accessibility"
   | "add"
@@ -1237,5 +1237,4 @@ export type IconNames =
   | "arrow-left-b"
   | "arrow-resize"
   | "arrow-right-b"
-  | "arrow-swap"
-
+  | "arrow-swap";

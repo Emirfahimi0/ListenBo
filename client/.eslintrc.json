@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["@react-native-community", "airbnb-base", "plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": ["@react-native-community", "plugin:@typescript-eslint/recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "import", "prettier", "react", "react-hooks", "react-native"],
   "rules": {
@@ -10,7 +10,6 @@
     "import/prefer-default-export": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
-    "no-use-before-define": "off", // conflict with typescript, use typescript rule instead
     "@typescript-eslint/no-use-before-define": ["error"],
     "object-shorthand": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
