@@ -43,20 +43,18 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
     try {
       setLoading(true);
       const response = await logIn({ email, password });
-
-      console.log("response", response);
       if (response.code === "error") {
         const { data } = response.error as any;
 
-        return Alert.alert(`Error occurred: ${data.error}`);
+        return Alert.alert(`Error: ${data.error}`);
       }
 
       if (response.code === "success" && response.data !== null) {
         const { profile, jwtToken } = response.data;
-
         await storeStorage(KEYS.AUTH_TOKEN, jwtToken);
 
-        dispatch(updateProfile(profile), updateLoggedIn(true));
+        dispatch(updateProfile(profile));
+        dispatch(updateLoggedIn(true));
       } else {
         return Alert.alert("Unexpected response from the server");
       }

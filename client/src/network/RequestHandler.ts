@@ -19,9 +19,9 @@ type BaseResponse<V, E> = Promise<SuccessResponse<V> | ErrorResponse<E>>;
 export const requestHandler =
   <T, V, E = AxiosError | ServerResponse>(request: BaseRequest<T, V>) =>
   async (body?: T): BaseResponse<V, E> => {
+    // console.log(body);
     try {
       const response = await request(body);
-
       return { code: "success", data: response.data };
     } catch (e) {
       const axiosError = e as AxiosError;

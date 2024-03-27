@@ -169,6 +169,7 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
             label={FORM.EMAIL_ADDRESS_LABEL}
             labelHolder={FORM.ENTER_EMAIL_LABEL}
             error={errorEmail}
+            autoCapitalize={"none"}
             value={email}
             onChange={handleOnChangeEmail}
             onBlur={handleOnBlurEmail}

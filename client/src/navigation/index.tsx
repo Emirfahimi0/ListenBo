@@ -16,8 +16,7 @@ export const MainRoutes: FunctionComponent = () => {
 
       if (token === null) return;
 
-      const data = await authorizedUser({ token });
-      console.log(data);
+      await authorizedUser({ token });
     } catch (error) {
       console.log(error);
     }
@@ -25,7 +24,7 @@ export const MainRoutes: FunctionComponent = () => {
 
   useEffect(() => {
     handleFetchInfo();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <NavigationContainer>
