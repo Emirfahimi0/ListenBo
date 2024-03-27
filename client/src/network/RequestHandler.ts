@@ -25,8 +25,10 @@ export const requestHandler =
       return { code: "success", data: response.data };
     } catch (e) {
       const axiosError = e as AxiosError;
-      if (axiosError.isAxiosError && axiosError.response) {
-        const { status, data } = axiosError.response;
+      const { isAxiosError, response } = axiosError;
+
+      if (isAxiosError && response) {
+        const { status, data } = response;
         return { code: "error", error: { status, data } } as ErrorResponse<E>;
       }
 

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import {
   alignFlexStart,
+  alignSelfEnd,
   colorGray,
   colorRose,
   colorTransparent,
@@ -21,11 +22,11 @@ import {
   fs12RegRose2,
   fs12SemiBoldJett3,
   sh10,
-  sh32,
+  sh2,
+  sh24,
   sh8,
   sw16,
   sw2,
-  sw20,
   sw4,
   sw8,
 } from "../../styles";
@@ -142,11 +143,9 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
           onFocus={handleOnFocus}
         />
         {visibilityText === undefined ? null : (
-          <View style={{ position: "absolute", right: sw20, top: sh32 }}>
-            <Pressable onPress={setVisible}>
-              <Icon color={colorRose._2} name={visibilityText === true ? "eye-disabled" : "eye"} size={sw16} />
-            </Pressable>
-          </View>
+          <Pressable onPress={setVisible} style={{ bottom: sh24, ...alignSelfEnd, paddingVertical: sh2, paddingHorizontal: sw8 }}>
+            <Icon color={colorRose._2} name={visibilityText === true ? "eye-disabled" : "eye"} size={sw16} />
+          </Pressable>
         )}
 
         {error === undefined ? null : (
