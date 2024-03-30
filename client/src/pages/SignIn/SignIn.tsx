@@ -44,7 +44,7 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
       setLoading(true);
       const response = await logIn({ email, password });
       if (response.code === "error") {
-        const { data } = response.error as any;
+        const { data } = response.error as unknown;
 
         return Alert.alert(`Error: ${data.error}`);
       }
@@ -73,16 +73,17 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
     navigation.replace("SignUp");
   };
 
-  const handleForgotPassword = async (email: string) => {
+  const handleForgotPassword = async () => {
     try {
       const response = await forgotPassword({ email });
 
       if (response.code === "error") {
-        const { data } = response.error as any;
+        const { data } = response.error as unknown;
         return Alert.alert(`Error occurred while checking on your account,${data.error}`);
       }
       if (response.code === "success" && response.data !== null) {
         const message = response.data.message;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return Alert.alert(message!);
       } else {
         return Alert.alert("Unexpected response from the server");
