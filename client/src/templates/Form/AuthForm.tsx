@@ -150,6 +150,26 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
     else return;
   };
 
+  const backgroundStyle: ViewStyle = {
+    backgroundColor: colorRose._1,
+    ...flexChild,
+  };
+
+  const arrowStyle: ViewStyle = {
+    padding: sw12,
+    marginLeft: sw4,
+    marginTop: sw4,
+  };
+
+  const borderBottomContainer: ViewStyle = {
+    ...flexChild,
+    backgroundColor: colorWhite._1,
+    borderTopLeftRadius: sw44,
+    borderTopRightRadius: sw44,
+    paddingHorizontal: sw20,
+    paddingTop: sh16,
+  };
+
   return (
     <View style={backgroundStyle}>
       <View style={{ paddingVertical: sh10 }}>
@@ -232,24 +252,4 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
       </ScrollView>
     </View>
   );
-};
-
-const backgroundStyle: ViewStyle = {
-  backgroundColor: colorRose._1,
-  ...flexChild,
-};
-
-const arrowStyle: ViewStyle = {
-  padding: sw12,
-  marginLeft: sw4,
-  marginTop: sw4,
-};
-
-const borderBottomContainer: ViewStyle = {
-  ...flexChild,
-  backgroundColor: colorWhite._1,
-  borderTopLeftRadius: sw44,
-  borderTopRightRadius: sw44,
-  paddingHorizontal: sw20,
-  paddingTop: sh16,
 };
