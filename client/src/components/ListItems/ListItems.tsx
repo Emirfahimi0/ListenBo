@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, FunctionComponent } from "react";
 import { View, Text, FlatList } from "react-native";
 import { flexRowSbSb, sw2, sh12, fs14BoldBlack2, fs12BoldOrange2, flexChild, sw12 } from "../../styles";
 import { CustomSpacer } from "../spacer";
@@ -12,7 +12,14 @@ interface ListItemsProps<T> {
   rightLabel: string;
 }
 
-export const ListItems = <T,>({ data, content, leftLabel, rightLabel, isHorizontal }: ListItemsProps<T>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const ListItems: FunctionComponent<ListItemsProps<any>> = <T,>({
+  data,
+  content,
+  leftLabel,
+  rightLabel,
+  isHorizontal,
+}: ListItemsProps<T>) => {
   return (
     <Fragment>
       <View style={{ ...flexRowSbSb, paddingHorizontal: sw2, paddingVertical: sh12 }}>
