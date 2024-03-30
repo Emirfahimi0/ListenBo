@@ -122,6 +122,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
 
   useEffect(() => {
     if (error !== undefined) shakeUI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

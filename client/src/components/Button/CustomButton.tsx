@@ -54,6 +54,7 @@ export const CustomButton: FunctionComponent<ICustomButtonProps> = ({
 }: ICustomButtonProps) => {
   const [hover, setHover] = useState<boolean>(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncePress = useCallback(
     debounce(onPress, 1000, {
       leading: true,

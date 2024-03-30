@@ -28,6 +28,17 @@ interface IWelcomePageProps {
 }
 
 export const WelcomePage: FunctionComponent<IWelcomePageProps> = ({ navigation }: IWelcomePageProps) => {
+  const backgroundSafeArea: ViewStyle = {
+    ...flexChild,
+    backgroundColor: colorJet._4,
+  };
+
+  const btnStyle: ViewStyle = {
+    paddingVertical: sh4,
+    backgroundColor: colorRose._2,
+    marginHorizontal: sw28,
+    borderRadius: sw8,
+  };
   return (
     <SafeAreaView style={backgroundSafeArea}>
       <View style={{ ...flexChild, ...spaceAroundVertical, marginVertical: sh32 }}>
@@ -54,17 +65,3 @@ export const WelcomePage: FunctionComponent<IWelcomePageProps> = ({ navigation }
     </SafeAreaView>
   );
 };
-
-const backgroundSafeArea: ViewStyle = {
-  ...flexChild,
-  backgroundColor: colorJet._4,
-};
-
-const btnStyle: ViewStyle = {
-  paddingVertical: sh4,
-  backgroundColor: colorRose._2,
-  marginHorizontal: sw28,
-  borderRadius: sw8,
-};
-
-export default WelcomePage;

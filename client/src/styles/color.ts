@@ -1,4 +1,5 @@
 export const colorTransparent = "rgba(0,0,0,0)";
+export const colorOverlay = "rgba(0,0,0,0.5)";
 
 export const colorBlack = {
   _1: "#000000",

@@ -6,16 +6,18 @@ import { CustomSpacer } from "../spacer";
 
 interface ILoadingProps {
   label?: string;
+  size?: number;
   secondary: boolean;
 }
 
-export const Loading: FunctionComponent<ILoadingProps> = ({ label, secondary }: ILoadingProps) => {
+export const Loading: FunctionComponent<ILoadingProps> = ({ label, secondary, size }: ILoadingProps) => {
+  const defaultSize = size === undefined ? sw16 : size;
   return (
     <Fragment>
       {secondary === false ? (
-        <ActivityIndicator size={sw16} color={colorGreen._1} />
+        <ActivityIndicator size={defaultSize} color={colorGreen._1} />
       ) : (
-        <CircleSnail color={colorGreen._1} size={sw16} thickness={sw2} />
+        <CircleSnail color={colorGreen._1} size={defaultSize} thickness={sw2} />
       )}
 
       <CustomSpacer space={sw8} />

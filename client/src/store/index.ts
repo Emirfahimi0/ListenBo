@@ -9,4 +9,4 @@ export const store = configureStore({
 const { getState, dispatch } = store;
 
 export type RootState = ReturnType<typeof getState>;
-export type AppDispatch = ReturnType<typeof dispatch>;
+export type AppDispatch = typeof dispatch;
