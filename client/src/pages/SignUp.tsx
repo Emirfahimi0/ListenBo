@@ -41,7 +41,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
       const response = await createAccount({ name, password, email });
 
       if (response.code === "error") {
-        const { data } = response.error as any;
+        const { data } = response.error as unknown;
         return Alert.alert(` ${data.error}`);
       }
 
@@ -68,7 +68,9 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
   const handleVerificationEvent = async (token: string) => {
     console.log("token", token);
     try {
-      if (newUserRef === null) return;
+      if (newUserRef === null) {
+        return;
+      }
       const userId = newUserRef.current!.userId;
       const response = await verifyAccountByEmail({ token, userId });
       console.log(response);
@@ -76,7 +78,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         return response.data.success! == null;
       }
       if (response.code === "error") {
-        const errorFromServer = response.error as any;
+        const errorFromServer = response.error as unknown;
         Alert.alert(`verfication failed ,${errorFromServer.status} `);
         return false;
       }
@@ -89,7 +91,9 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
 
   const handleReVerficationEvent = useCallback(async () => {
     try {
-      if (newUserRef === null) return;
+      if (newUserRef === null) {
+        return;
+      }
       const userId = newUserRef.current!.userId;
       const response = await reVerifyAccountByEmail({ userId });
       console.log(response);
@@ -97,7 +101,7 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         console.log(response.data);
       }
       if (response.code === "error") {
-        const errorFromServer = response.error as any;
+        const errorFromServer = response.error as unknown;
         return Alert.alert(`verfication failed ,${errorFromServer.status} `);
       }
     } catch (error) {
