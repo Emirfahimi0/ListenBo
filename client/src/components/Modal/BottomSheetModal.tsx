@@ -98,6 +98,24 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
   if (currentStep === "OTPEvent" && handleVerificationEvent !== undefined && handleReVerified !== undefined)
     content = <VerificationEvent handleOtpEvent={handleVerificationEvent} handleReVerfication={handleReVerified} />;
 
+  const backgroundStyle: ViewStyle = {
+    borderRadius: 0,
+    backgroundColor: colorTransparent,
+  };
+
+  const modalStyle: ViewStyle = {
+    borderTopLeftRadius: sw40,
+    borderTopRightRadius: sw40,
+    backgroundColor: colorWhite._1,
+    ...flexChild,
+  };
+
+  const arrowStyle: ViewStyle = {
+    padding: sw16,
+    borderTopRightRadius: sw8,
+    borderBottomLeftRadius: sw8,
+  };
+
   return (
     <BottomSheetModal
       backgroundStyle={backgroundStyle}
@@ -118,22 +136,4 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
       </View>
     </BottomSheetModal>
   );
-};
-
-const backgroundStyle: ViewStyle = {
-  borderRadius: 0,
-  backgroundColor: colorTransparent,
-};
-
-const modalStyle: ViewStyle = {
-  borderTopLeftRadius: sw40,
-  borderTopRightRadius: sw40,
-  backgroundColor: colorWhite._1,
-  ...flexChild,
-};
-
-const arrowStyle: ViewStyle = {
-  padding: sw16,
-  borderTopRightRadius: sw8,
-  borderBottomLeftRadius: sw8,
 };

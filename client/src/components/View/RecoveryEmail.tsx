@@ -66,14 +66,11 @@ export const RecoveryEmailForm: FunctionComponent<IRecoveryEmailFormProps> = ({
   };
 
   const handleOnBlurEmail = () => {
-    let error = "";
     if (email === "") {
-      error = FORM.ENTER_EMAIL_LABEL;
-      return setRecoveryEmail({ ...recoveryEmail, error: error });
+      return setRecoveryEmail({ ...recoveryEmail, error: FORM.ENTER_EMAIL_LABEL });
     }
     if (isValidEmail(email) === false) {
-      error = FORM.ERROR_INVALID_EMAIL;
-      return setRecoveryEmail({ ...recoveryEmail, error: error });
+      return setRecoveryEmail({ ...recoveryEmail, error: FORM.ERROR_INVALID_EMAIL });
     }
 
     return setRecoveryEmail({ ...recoveryEmail });
@@ -84,6 +81,12 @@ export const RecoveryEmailForm: FunctionComponent<IRecoveryEmailFormProps> = ({
   };
 
   const disable = email === "" || (email !== "" && error !== undefined);
+
+  const buttonStyle: ViewStyle = {
+    borderRadius: sw20,
+    borderColor: colorTransparent,
+    backgroundColor: colorOrange._1,
+  };
 
   return (
     <Fragment>
@@ -123,10 +126,4 @@ export const RecoveryEmailForm: FunctionComponent<IRecoveryEmailFormProps> = ({
       </ScrollView>
     </Fragment>
   );
-};
-
-const buttonStyle: ViewStyle = {
-  borderRadius: sw20,
-  borderColor: colorTransparent,
-  backgroundColor: colorOrange._1,
 };
