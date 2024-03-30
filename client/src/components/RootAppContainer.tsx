@@ -9,7 +9,7 @@ interface RootAppContainerProps {
 export const RootAppContainer: FunctionComponent<RootAppContainerProps> = ({ children }: RootAppContainerProps) => {
   return (
     <Fragment>
-      <SafeAreaView style={{ backgroundColor: colorWhite._1 }} />
+      <SafeAreaView style={{ backgroundColor: colorWhite._2 }} />
       {children}
     </Fragment>
   );

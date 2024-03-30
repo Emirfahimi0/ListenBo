@@ -71,7 +71,9 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
   );
 
   const closeModal = () => {
-    if (currentContent === undefined) return;
+    if (currentContent === undefined) {
+      return;
+    }
     if (currentContent.length === 1 && currentContent[1] === "OTPEvent") {
       updateCurrentContent(["RecoverEmail"]);
       setCurrentStep("RecoverEmail");
@@ -82,7 +84,7 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
     }
   };
 
-  if (currentStep === "RecoverEmail")
+  if (currentStep === "RecoverEmail") {
     content = (
       <RecoveryEmailForm
         title={FORM.FORGET_PASSWORD_LABEL}
@@ -94,9 +96,11 @@ export const BottomSheetModalComponent: FunctionComponent<IBottomSheetModalCompo
         handleRecoveryEmail={handleForgotPassword}
       />
     );
+  }
 
-  if (currentStep === "OTPEvent" && handleVerificationEvent !== undefined && handleReVerified !== undefined)
+  if (currentStep === "OTPEvent" && handleVerificationEvent !== undefined && handleReVerified !== undefined) {
     content = <VerificationEvent handleOtpEvent={handleVerificationEvent} handleReVerfication={handleReVerified} />;
+  }
 
   const backgroundStyle: ViewStyle = {
     borderRadius: 0,
