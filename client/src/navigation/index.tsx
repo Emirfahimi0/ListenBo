@@ -20,7 +20,9 @@ export const MainRoutes: FunctionComponent = () => {
     try {
       const token = await getStorage(KEYS.AUTH_TOKEN);
 
-      if (token === null) return;
+      if (token === null) {
+        return;
+      }
 
       const data = await authorizedUser({ token });
       console.log(data);
@@ -49,7 +51,7 @@ export const MainRoutes: FunctionComponent = () => {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: colorWhite._1,
+      background: colorWhite._2,
     },
   };
 
