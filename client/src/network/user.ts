@@ -36,9 +36,9 @@ export const forgotPassword = requestHandler<IUserNetwork.ForgotPassword, ReVeri
 );
 
 export const authorizedUser = requestHandler<IUserNetwork.JwtTokenRequest, IUserProfile>((token) =>
-  client.get("/authorized", {
+  client.get("/auth/authorized", {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token?.token}`,
     },
   }),
 );
