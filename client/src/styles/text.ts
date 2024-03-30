@@ -54,6 +54,13 @@ export const fs10BoldRose1: TextStyle = {
   lineHeight: scaleHeight(10 * 1.6),
 };
 
+export const fs10BoldOrange1: TextStyle = {
+  color: colorOrange._1,
+  fontFamily: NunitoBold,
+  fontSize: sh10,
+  lineHeight: scaleHeight(10 * 1.6),
+};
+
 export const fs10BoldWhite1: TextStyle = {
   color: colorWhite._1,
   fontFamily: NunitoBold,
@@ -91,6 +98,12 @@ export const fs10RegGray3: TextStyle = {
 
 export const fs10RegGray4: TextStyle = {
   color: colorGray._2,
+  fontFamily: NunitoRegular,
+  fontSize: sh10,
+  lineHeight: scaleHeight(10 * 1.6),
+};
+export const fs12RegWhite2: TextStyle = {
+  color: colorWhite._2,
   fontFamily: NunitoRegular,
   fontSize: sh10,
   lineHeight: scaleHeight(10 * 1.6),
@@ -242,6 +255,12 @@ export const fs14RegGray1: TextStyle = {
 
 export const fs16BoldBlack1: TextStyle = {
   color: colorBlack._1,
+  fontFamily: NunitoBold,
+  fontSize: sh16,
+  lineHeight: scaleHeight(16 * 1.48),
+};
+export const fs14BoldOrange4: TextStyle = {
+  color: colorOrange._4,
   fontFamily: NunitoBold,
   fontSize: sh16,
   lineHeight: scaleHeight(16 * 1.48),
