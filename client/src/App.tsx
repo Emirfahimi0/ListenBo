@@ -1,21 +1,22 @@
 import React from "react";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { flexChild } from "./src/styles";
+import { flexChild } from "./styles";
 import { Provider } from "react-redux";
-import { store } from "./src/store";
-import { MainRoutes } from "./src/navigation";
+import { store } from "./store";
+import { MainRoutes } from "./navigation";
+import { RootAppContainer } from "./components";
 
-const App = () => {
+export const App = () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={flexChild}>
         <BottomSheetModalProvider>
-          <MainRoutes />
+          <RootAppContainer>
+            <MainRoutes />
+          </RootAppContainer>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
     </Provider>
   );
 };
-
-export default App;
