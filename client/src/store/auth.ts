@@ -2,12 +2,14 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 
 declare interface IInitialState {
-  user: IUserProfile | null;
+  isBusy: boolean;
   isLoggedIn: boolean;
+  user: IUserProfile | null;
 }
 const initialState: IInitialState = {
-  user: null,
+  isBusy: false,
   isLoggedIn: false,
+  user: null,
 };
 
 const slice = createSlice({
@@ -20,11 +22,14 @@ const slice = createSlice({
     updateLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.isLoggedIn = action.payload;
     },
+    updateBusyState: (state, action: PayloadAction<boolean>) => {
+      state.isBusy = action.payload;
+    },
   },
 });
 
 export const authState = (state: RootState) => state.auth;
 
-export const { updateProfile, updateLoggedIn } = slice.actions;
+export const { updateProfile, updateLoggedIn, updateBusyState } = slice.actions;
 
 export default slice.reducer;
