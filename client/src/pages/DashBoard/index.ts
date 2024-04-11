@@ -1,3 +1,3 @@
-export * from "./Home";
+export * from "./HomePage";
 export * from "./Profile";
-export * from "./Upload";
+export * from "./UploadPage";

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { Image, ImageBackground, ScrollView, Text, View } from "react-native";
-import { CustomSpacer, CustomFlexSpacer, Icon, CustomButton, ListItems } from "../../components";
+import { Image, ImageBackground, ScrollView, Text, View, ViewStyle } from "react-native";
+import { CustomSpacer, CustomFlexSpacer, Icon, CustomButton, ListItems } from "../../../components";
 import {
   sh18,
   sw12,
@@ -36,7 +36,7 @@ import {
   rowCenterVertical,
   colorJet,
   sh80,
-} from "../../styles";
+} from "../../../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -76,6 +76,14 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
     },
   ];
 
+  const premiumImageStyle: ViewStyle = {
+    backgroundColor: colorOrange._1,
+    borderRadius: sw12,
+    paddingVertical: sh12,
+    paddingHorizontal: sw8,
+    ...spaceAroundVertical,
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: sh80, paddingVertical: sh18, paddingHorizontal: sw12 }}
@@ -86,7 +94,7 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
       <View style={flexChild}>
         <View style={flexRow}>
           <Image
-            source={require("../../assets/images/pp.jpg")}
+            source={require("../../../assets/images/pp.jpg")}
             style={{ width: sw32, height: sh32, borderRadius: sw40, borderColor: colorGray._1, borderWidth: sw2 }}
             resizeMode="contain"
           />
@@ -100,16 +108,10 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
         </View>
         <CustomSpacer space={sh18} />
         <ImageBackground
-          source={require("../../assets/images/Premium.jpeg")}
+          source={require("../../../assets/images/Premium.jpeg")}
           imageStyle={{ borderRadius: sw12 }}
           resizeMode="cover"
-          style={{
-            backgroundColor: colorOrange._1,
-            borderRadius: sw12,
-            paddingVertical: sh12,
-            paddingHorizontal: sw8,
-            ...spaceAroundVertical,
-          }}>
+          style={premiumImageStyle}>
           <Text style={fs16BoldWhite1}>Enjoy all Benefits!</Text>
           <Text style={{ ...fs12RegWhite2, paddingVertical: sh8 }}>
             Enjoy listening to podcast with better audio without restrictions and without ads
