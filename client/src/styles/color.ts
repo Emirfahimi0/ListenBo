@@ -32,9 +32,9 @@ export const colorGray = {
 };
 
 export const colorWhite = {
-  _1: "#FBFBFB",
-  _2: "#FBFBFB",
-  _3: "#FBFBFB",
+  _1: "#FFFFFF",
+  _2: "#F5F5F5",
+  _3: "#f9fafa",
 };
 
 export const colorOrange = {
@@ -48,8 +48,8 @@ export const colorOrange = {
 export const colorBlue = {
   _1: "#020122",
   _2: "#070462",
-  _3: "#090576",
-  _4: "#04023B",
+  _3: "#2979F2",
+  _4: "#156CF7",
   _5: "#324376",
 };
 
