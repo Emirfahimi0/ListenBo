@@ -9,3 +9,7 @@ export const isPasswordValid = (password: string) => {
 };
 
 export const isNotEmptyString = (value: string, error?: string): boolean => value !== "" && error !== undefined;
+
+export const isUndefined = (value: null | undefined | []) => {
+  return value === null || value === undefined || value.length === 0;
+};
