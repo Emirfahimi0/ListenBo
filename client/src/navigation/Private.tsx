@@ -75,9 +75,9 @@ export const PrivateRoute = () => {
           );
         },
       }}>
-      {screens.map(({ name, component, IconStyle }) => (
+      {screens.map(({ name, component, IconStyle }, index) => (
         <Screen
-          key={name}
+          key={index}
           name={name}
           component={component}
           options={{
