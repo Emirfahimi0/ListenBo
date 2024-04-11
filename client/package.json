@@ -34,6 +34,7 @@
     "react": "^18.2.0",
     "react-icomoon": "^2.5.7",
     "react-native": "0.70.10",
+    "react-native-document-picker": "^9.1.1",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-icomoon": "^0.1.1",
     "react-native-progress": "^5.0.1",
