@@ -4,7 +4,9 @@ export const useCountDown = (length: number) => {
   const [seconds, setSeconds] = useState<number>(length);
 
   useEffect(() => {
-    if (seconds <= 0) return;
+    if (seconds <= 0) {
+      return;
+    }
 
     const timeOut = setTimeout(() => {
       setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : prevSeconds));

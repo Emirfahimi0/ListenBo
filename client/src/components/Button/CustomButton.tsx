@@ -29,6 +29,7 @@ interface ICustomButtonProps {
   buttonStyle?: ViewStyle;
   disabled?: boolean;
   icon?: IconNames;
+  hoverBackgroundColor?: string;
   iconColor?: string;
   iconSize?: number;
   loading?: boolean;
@@ -67,8 +68,8 @@ export const CustomButton: FunctionComponent<ICustomButtonProps> = ({
 
   const defaultButtonStyle: ViewStyle = {
     ...flexRow,
-    ...border(color, sw2),
     ...centerHorizontal,
+    ...border(color, sw2),
     backgroundColor: secondary ? colorTransparent : color,
     paddingVertical: sh4,
     opacity: disabled === true ? 0.5 : 1,

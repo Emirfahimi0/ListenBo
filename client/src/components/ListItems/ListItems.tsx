@@ -4,7 +4,7 @@ import { flexRowSbSb, sw2, sh12, fs14BoldBlack2, fs12BoldOrange2, flexChild, sw1
 import { CustomSpacer } from "../spacer";
 
 interface ListItemsProps<T> {
-  content: (item: T) => JSX.Element;
+  content?: (item: T) => JSX.Element;
   data: T[];
   headerContent?: JSX.Element;
   isHorizontal?: boolean;
@@ -12,14 +12,16 @@ interface ListItemsProps<T> {
   rightLabel: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const ListItems: FunctionComponent<ListItemsProps<any>> = <T,>({
+export const ListItems: FunctionComponent<ListItemsProps<unknown>> = <T,>({
   data,
   content,
   leftLabel,
   rightLabel,
   isHorizontal,
 }: ListItemsProps<T>) => {
+  const renderContent = (item: T) => {
+    return content === undefined ? <View /> : content(item);
+  };
   return (
     <Fragment>
       <View style={{ ...flexRowSbSb, paddingHorizontal: sw2, paddingVertical: sh12 }}>
@@ -33,7 +35,7 @@ export const ListItems: FunctionComponent<ListItemsProps<any>> = <T,>({
           horizontal={isHorizontal === undefined ? true : isHorizontal}
           ItemSeparatorComponent={({}) => <CustomSpacer isHorizontal={isHorizontal === undefined ? true : isHorizontal} space={sw12} />}
           renderItem={({ item, index }) => {
-            return <Fragment key={index}>{content(item)}</Fragment>;
+            return <Fragment key={index}>{renderContent(item)}</Fragment>;
           }}
         />
       ) : (
@@ -42,7 +44,7 @@ export const ListItems: FunctionComponent<ListItemsProps<any>> = <T,>({
             return (
               <Fragment key={index}>
                 <CustomSpacer space={sh12} />
-                {content(item)}
+                {renderContent(item)}
               </Fragment>
             );
           })}

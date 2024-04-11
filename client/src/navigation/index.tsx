@@ -7,7 +7,7 @@ import { authorizedUser } from "../network";
 import { KEYS, getStorage } from "../utils";
 import { AppDispatch } from "../store";
 import { authState, updateLoggedIn, updateProfile, updateBusyState } from "../store/auth";
-import { Loading } from "../components";
+import { Loading, RootAppContainer } from "../components";
 import { StyleSheet, View } from "react-native";
 import { centerHV, colorTransparent, colorWhite, sw24, zIndexTop } from "../styles";
 
@@ -20,7 +20,9 @@ export const MainRoutes: FunctionComponent = () => {
     try {
       const token = await getStorage(KEYS.AUTH_TOKEN);
 
-      if (token === null) return;
+      if (token === null) {
+        return;
+      }
 
       const data = await authorizedUser({ token });
       console.log(data);
@@ -49,7 +51,7 @@ export const MainRoutes: FunctionComponent = () => {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: colorWhite._1,
+      background: colorWhite._2,
     },
   };
 
@@ -60,7 +62,15 @@ export const MainRoutes: FunctionComponent = () => {
           <Loading secondary={true} size={sw24} />
         </View>
       ) : null}
-      <Fragment>{isLoggedIn === true ? <PrivateRoute /> : <PublicRoute />}</Fragment>
+      <Fragment>
+        {isLoggedIn === true ? (
+          <RootAppContainer>
+            <PrivateRoute />
+          </RootAppContainer>
+        ) : (
+          <PublicRoute />
+        )}
+      </Fragment>
     </NavigationContainer>
   );
 };

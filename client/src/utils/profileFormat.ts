@@ -1,7 +1,9 @@
 export const newUserFormatter = (user: NewCreatedUser) => {
   const value = user instanceof Object ? true : false;
 
-  if (value === false) return;
+  if (value === false) {
+    return;
+  }
 
   const newFormatter: newUser = {
     createdAt: user.createdAt,

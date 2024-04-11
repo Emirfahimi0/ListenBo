@@ -8,3 +8,4 @@ export * from "./View";
 export * from "./Loader";
 export * from "./ListItems";
 export * from "./RootAppContainer";
+export * from "./Uploader";

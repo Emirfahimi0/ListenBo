@@ -98,7 +98,9 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   const handleOnBlurName = () => {
     let error = "";
 
-    if (name === undefined) return;
+    if (name === undefined) {
+      return;
+    }
 
     if (name.trim() === "") {
       error = FORM.NAME_EMPTY;
@@ -146,8 +148,11 @@ export const AuthFormTemplates: FunctionComponent<IAuthFormTemplatesProps> = ({
   };
 
   const openModal = () => {
-    if (showModal) showModal();
-    else return;
+    if (showModal) {
+      showModal();
+    } else {
+      return;
+    }
   };
 
   const backgroundStyle: ViewStyle = {

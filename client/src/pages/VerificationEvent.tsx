@@ -65,20 +65,24 @@ export const VerificationEvent: FunctionComponent<IVerificationEventProps> = ({
   // use onCodeChanged of the module, every-time the code.length === 1 remove error styles.
 
   const handleResendCode = async () => {
-    if (seconds === 0) startCountDown(initialCountDown);
+    if (seconds === 0) {
+      startCountDown(initialCountDown);
+    }
     handleReVerfication(code!);
     return setOtpCode(initialValue);
   };
 
-  const handleOnCodeChange = (code: string) => {
-    setOtpCode({ ...otpCode, code: code });
+  const handleOnCodeChange = (value: string) => {
+    setOtpCode({ ...otpCode, code: value });
     // if (code.length === 1) {
     //   setOtpCode()
     // }
   };
 
   useEffect(() => {
-    if (isSuccess === true) return console.log("true");
+    if (isSuccess === true) {
+      return console.log("true");
+    }
   }, [isSuccess]);
 
   const defaultInputStyle: TextStyle = {

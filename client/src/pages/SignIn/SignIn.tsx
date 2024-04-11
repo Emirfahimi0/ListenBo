@@ -51,6 +51,7 @@ export const SignIn: FunctionComponent<ISignInProps> = ({ navigation }: ISignInP
 
       if (response.code === "success" && response.data !== null) {
         const { profile, jwtToken } = response.data;
+        console.log(response.data);
         await storeStorage(KEYS.AUTH_TOKEN, jwtToken);
 
         dispatch(updateProfile(profile));

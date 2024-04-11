@@ -121,7 +121,9 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
   const textInputStyle: TextStyle = containerStyle !== undefined ? { ...defaultTextStyle, ...containerStyle } : defaultTextStyle;
 
   useEffect(() => {
-    if (error !== undefined) shakeUI();
+    if (error !== undefined) {
+      shakeUI();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
