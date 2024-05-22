@@ -20,11 +20,12 @@ import {
   fullWidth,
   sw4,
   fs12SemiBoldJett3,
+  sh40,
 } from "../../styles";
 import { Icon } from "../Icons";
 import { CustomSpacer } from "../spacer";
 import { ScrollView } from "react-native-gesture-handler";
-import Animated, { BounceInDown, ReduceMotion } from "react-native-reanimated";
+import Animated, { FadeInDown, ReduceMotion, measure, useAnimatedRef } from "react-native-reanimated";
 
 interface DropdownPickerProps<T> {
   dropBackgroundColor?: string;
@@ -52,6 +53,8 @@ export const DropdownPicker: FunctionComponent<DropdownPickerProps<unknown>> = <
   spaceToTop,
 }: DropdownPickerProps<T>) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
+  const animatedRef = useAnimatedRef();
+
   const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
@@ -71,14 +74,13 @@ export const DropdownPicker: FunctionComponent<DropdownPickerProps<unknown>> = <
     paddingVertical: sh8,
   };
 
-  const animationEntering = BounceInDown.duration(300)
-    .delay(500)
-    .randomDelay()
-    .reduceMotion(ReduceMotion.Never)
-    .withInitialValues({ transform: [{ translateY: -420 }] })
-    .withCallback((finished) => {
-      console.log(`finished without interruptions: ${finished}`);
-    });
+  const measurement = measure(animatedRef);
+
+  const animationEntering = FadeInDown.duration(600)
+    .springify(measurement?.y)
+    .reduceMotion(ReduceMotion.System)
+    .damping(10)
+    .withInitialValues({ transform: [{ translateY: measurement === null ? -sh40 / 2 : measurement.y }] });
 
   return (
     <Fragment>
@@ -94,12 +96,13 @@ export const DropdownPicker: FunctionComponent<DropdownPickerProps<unknown>> = <
         <TouchableOpacity onPress={toggleOptions} style={dropDownStyle}>
           <View style={{ ...flexRowSbSb, ...centerVertical }}>
             <Text style={fs12BoldBlack2}>{selected === undefined ? "Select an option" : (selected.value as string)}</Text>
-            <Icon name="md-arrow-dropdown" size={sw18} color={colorJet._1} />
+
+            <Icon name={showOptions === true ? "arrow-down-circle" : "arrow-up-circle"} size={sw18} color={colorGray._2} />
           </View>
         </TouchableOpacity>
         <CustomSpacer space={sh4} />
         {showOptions === false ? null : (
-          <Animated.View style={optionContainerStyle} entering={animationEntering}>
+          <Animated.View style={optionContainerStyle} entering={animationEntering} ref={animatedRef}>
             <ScrollView style={fullWidth}>
               {options.map((option, index) => {
                 const handleSelect = () => {

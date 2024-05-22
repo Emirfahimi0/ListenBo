@@ -6,6 +6,14 @@ type fileUrl = {
 };
 
 declare global {
+  interface IUploadProgress {
+    inputMax: number;
+    inputMin: number;
+    outputMax: number;
+    outputMin: number;
+    value: number;
+  }
+
   type TCategoriesPlaylist = "Art" | "Business" | "Education" | "Entertainment" | "Kids & Family" | "Music" | "Science" | "Tech" | "Others";
   interface IDropdownOptions<T> {
     option: T;

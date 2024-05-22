@@ -61,6 +61,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
   onFocus,
   // onLayout,
   setVisible,
+  value,
   visibilityText,
   secureTextEntry,
   spaceBottomLabel,
@@ -142,6 +143,7 @@ export const CustomTextInput: FunctionComponent<ICustomTextInputProps> = ({
           secureTextEntry={secureTextEntry}
           placeholder={labelHolder === undefined ? undefined : labelHolder}
           onBlur={handleOnBlur}
+          value={value}
           onChange={onChange}
           onFocus={handleOnFocus}
         />

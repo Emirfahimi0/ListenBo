@@ -1,21 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home, Profile, Upload } from "../pages/DashBoard";
-import {
-  absolutePosition,
-  colorGreen,
-  colorOrange,
-  colorOverlay,
-  colorWhite,
-  overflowHidden,
-  sh4,
-  sw12,
-  sw18,
-  sw24,
-  sw4,
-  sw56,
-  sw8,
-} from "../styles";
+import { absolutePosition, colorBlue, colorGreen, overflowHidden, sh4, sw10, sw12, sw18, sw24, sw4, sw8 } from "../styles";
 import { Icon, IconProps } from "../components";
 import { BlurView } from "@react-native-community/blur";
 import { StyleSheet, View, ViewStyle } from "react-native";
@@ -30,9 +16,9 @@ interface ITabScreen {
 
 export const PrivateRoute = () => {
   const screens: ITabScreen[] = [
-    { name: "Profile", component: Profile, IconStyle: { name: "people-circle", size: sw18 } },
-    { name: "Home", component: Home, IconStyle: { name: "home", size: sw18 } },
-    { name: "Upload", component: Upload, IconStyle: { name: "cloud-upload", size: sw18 } },
+    { name: "Profile", component: Profile, IconStyle: { name: "icon_end_user_customers", size: sw24, strokeWidth: 10 } },
+    { name: "Home", component: Home, IconStyle: { name: "icon_github", size: sw24, strokeWidth: 10 } },
+    { name: "Upload", component: Upload, IconStyle: { name: "icon_cloud_dedicated", size: sw24, strokeWidth: 10 } },
   ];
 
   const tabBarLabel = ({ focused }) => {
@@ -57,18 +43,17 @@ export const PrivateRoute = () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        tabBarInactiveTintColor: colorWhite._1,
-        tabBarActiveTintColor: colorOrange._2,
+        tabBarInactiveTintColor: colorBlue._1,
+        tabBarActiveTintColor: colorBlue._5,
         tabBarStyle,
         tabBarBackground: () => {
           return (
             <BlurView
-              blurType="regular"
-              blurAmount={sw56}
+              blurType="chromeMaterial"
+              blurAmount={sw10}
               style={{
                 ...StyleSheet.absoluteFillObject,
                 borderRadius: sw24,
-                backgroundColor: colorOverlay,
                 ...overflowHidden,
               }}
             />

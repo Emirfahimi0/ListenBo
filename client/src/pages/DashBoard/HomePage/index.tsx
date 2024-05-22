@@ -15,7 +15,6 @@ import {
   fs12BoldGray1,
   fs16BoldBlack2,
   colorOrange,
-  sw24,
   sh12,
   spaceAroundVertical,
   fs16BoldWhite1,
@@ -43,13 +42,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 interface IHomeProps {}
 
 export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
-  interface podcastProps {
+  interface PodcastProps {
     id: number;
     title: string;
     url: string;
     description: string;
   }
-  const dummyData: podcastProps[] = [
+  const dummyData: PodcastProps[] = [
     {
       id: 1,
       title: "927: Deep Dive | How to Quit Your Job the Right Way",
@@ -59,19 +58,19 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
     {
       id: 2,
       title: "875: Should I Marry My Dying Girlfriend? | FeedBack Friday",
-      description: "Apple Talk | 52.7 mins",
+      description: "Amazon Debit | 52.7 mins",
       url: "https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/01/attachment_91625055-e1515419927311.jpeg?auto=format&q=60&fit=max&w=930",
     },
     {
       id: 3,
       title: "739: Rick Ross | How to Boss Up and Build Empire",
-      description: "Apple Talk | 52.7 mins",
+      description: "Ripple Effect | 52.7 mins",
       url: "https://blackeffect.com/wp-content/uploads/2023/09/TheBreakfastClub-LogoV3-FINAL1000x1000.jpg",
     },
     {
       id: 4,
       title: "653: Paxton Cruz | Finance Talk",
-      description: "Apple Talk | 52.7 mins",
+      description: "Finance Elevate | 52.7 mins",
       url: "https://images.prismic.io/buzzsprout/63b8b04a-bc44-449b-9e12-b450a7922efe_CleanShot+2024-03-05+at+15.34.54%402x.png?auto=compress,format",
     },
   ];
@@ -104,7 +103,7 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
             <Text style={fs16BoldBlack2}>Emir Fahimi</Text>
           </View>
           <CustomFlexSpacer />
-          <Icon name="md-notifications" color={colorGray._1} size={sw24} />
+          <Icon name="icon_alerts" color={colorGray._1} size={sw32} />
         </View>
         <CustomSpacer space={sh18} />
         <ImageBackground
@@ -125,14 +124,18 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
         </ImageBackground>
 
         <ListItems
-          data={dummyData as podcastProps[]}
+          data={dummyData}
           isHorizontal={true}
-          content={(item: podcastProps) => (
+          content={(item: unknown) => (
             <TouchableOpacity
               onPress={() => {
-                console.log("wow");
+                console.log((item as PodcastProps).description);
               }}>
-              <Image source={{ uri: item.url }} style={{ borderRadius: sw12, width: sw100, height: sh100 }} resizeMode="cover" />
+              <Image
+                source={{ uri: (item as PodcastProps).url }}
+                style={{ borderRadius: sw12, width: sw100, height: sh100 }}
+                resizeMode="cover"
+              />
             </TouchableOpacity>
           )}
           leftLabel={"Recently Played"}
@@ -141,11 +144,11 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
         <ListItems
           data={dummyData}
           isHorizontal={false}
-          content={(item: podcastProps) => (
+          content={(item: unknown) => (
             <View style={{ ...flexRow, maxHeight: sh120 }}>
               {/* left layout */}
               <Image
-                source={{ uri: item.url }}
+                source={{ uri: (item as PodcastProps).url }}
                 style={{ borderRadius: sw12, width: sw120, height: sh120, aspectRatio: 1 }}
                 resizeMode="cover"
               />
@@ -153,10 +156,10 @@ export const Home: FunctionComponent<IHomeProps> = ({}: IHomeProps) => {
               {/* right layout */}
               <View style={{ ...flexChild, paddingHorizontal: sh8 }}>
                 <Text style={fs16BoldBlack2} numberOfLines={2} ellipsizeMode="tail">
-                  {item.title}
+                  {(item as PodcastProps).title}
                 </Text>
                 <CustomFlexSpacer />
-                <Text style={fs10BoldGray1}>{item.description}</Text>
+                <Text style={fs10BoldGray1}>{(item as PodcastProps).description}</Text>
                 <CustomFlexSpacer />
                 <View style={{ ...spaceBetweenHorizontal, ...rowCenterVertical }}>
                   <CustomButton

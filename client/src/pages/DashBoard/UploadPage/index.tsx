@@ -18,8 +18,17 @@ const initialInputState: IUploadFile = {
 export const Upload: FunctionComponent<IUploadProps> = ({}: IUploadProps) => {
   const [input, setInput] = useState<IUploadFile>(initialInputState);
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
+  const [progress, setProgress] = useState<number>(0);
 
   const { title, description, category, fileUrl } = input;
+
+  const handleProgress = (value: number) => {
+    console.log(value);
+    if (value >= 100) {
+      setInput(initialInputState);
+    }
+    setProgress(value);
+  };
 
   const handleUpload = async () => {
     const formData = new FormData();
@@ -54,12 +63,11 @@ export const Upload: FunctionComponent<IUploadProps> = ({}: IUploadProps) => {
       setLoading(true);
 
       const token = await getStorage(KEYS.AUTH_TOKEN);
-      const response = (await createAudio(formData, token ? token : "")) as unknown;
+      const response = (await createAudio(formData, token ? token : "", handleProgress)) as unknown;
 
       if (response.code === "error") {
         const errorMessage = response.error.data.error;
         Alert.alert(errorMessage);
-
         //response for success
       }
     } catch (error) {
@@ -86,6 +94,7 @@ export const Upload: FunctionComponent<IUploadProps> = ({}: IUploadProps) => {
         handleUpload={handleUpload}
         setUploadData={setInput}
         uploadData={input}
+        progress={progress}
         loading={loading}
       />
     </Fragment>

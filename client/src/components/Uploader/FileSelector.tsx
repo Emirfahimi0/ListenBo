@@ -1,5 +1,5 @@
 import { Fragment, FunctionComponent, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, TextStyle, ViewStyle } from "react-native";
+import { View, Text, TouchableOpacity, TextStyle, ViewStyle, Pressable } from "react-native";
 import {
   centerHV,
   sw8,
@@ -23,33 +23,39 @@ import { SupportedPlatforms } from "react-native-document-picker/lib/typescript/
 import { DirectoryPickerResponse, DocumentPickerResponse, isCancel, isInProgress, types, pickSingle } from "react-native-document-picker";
 import Animated, {
   ReduceMotion,
+  cancelAnimation,
   measure,
   runOnJS,
+  runOnUI,
   useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 import { isUndefined } from "lodash";
+import { fileUrl } from "../../types/upload";
 
 interface FileSelectorProps {
   label: string;
   labelStyle?: TextStyle;
-  onPressAction: (upload: DocumentPickerResponse[] | DirectoryPickerResponse | null | undefined) => void;
-  subLabel?: string;
+  onPressAction: (value: DocumentPickerResponse[] | DirectoryPickerResponse | null | undefined) => void;
   options?: DocumentPickerOptions<SupportedPlatforms>;
+  subLabel?: string;
+  value?: fileUrl | undefined;
 }
 
 export const FileSelector: FunctionComponent<FileSelectorProps> = ({
   label,
   labelStyle,
+  value,
   onPressAction,
   subLabel,
   options,
 }: FileSelectorProps) => {
   const [upload, setUpload] = useState<Array<DocumentPickerResponse> | DirectoryPickerResponse | null | undefined>(undefined);
   const paddingAnimated = useSharedValue(sh40);
-  const [layout, setLayout] = useState<number>(0);
+  const animatedRef = useAnimatedRef();
+  const [height, setHeight] = useState<number>(0);
 
   const defaultOptions: DocumentPickerOptions<SupportedPlatforms> = {
     type: [types.allFiles],
@@ -96,13 +102,8 @@ export const FileSelector: FunctionComponent<FileSelectorProps> = ({
     return {
       ...uploadContainerStyle,
       paddingVertical: paddingAnimated.value,
-      ...color,
     };
   }, [upload]);
-
-  const defaultContainerStyle: ViewStyle = {
-    ...(isUndefined(upload) || upload === null ? uploadContainerStyle : animatedStyle),
-  };
 
   const defaultIconStyle: IconProps =
     isUndefined(upload) || upload === null
@@ -113,16 +114,27 @@ export const FileSelector: FunctionComponent<FileSelectorProps> = ({
       : { name: "icon_in-memory", color: colorBlue._4 };
 
   const scaleDownUI = () => {
+    runOnUI(() => {
+      "worklet";
+      const measurement = measure(animatedRef);
+
+      if (measurement === null) {
+        return;
+      }
+      runOnJS(setHeight)(Math.floor(measurement.height));
+    })();
+
     paddingAnimated.value = withSpring(upload !== undefined ? paddingAnimated.value - sh32 : sh40, {
       mass: 3.1,
       damping: 10,
       stiffness: 40,
-      overshootClamping: false,
+      overshootClamping: true,
       restDisplacementThreshold: 0.01,
       restSpeedThreshold: 2,
       reduceMotion: ReduceMotion.System,
     });
   };
+
   const handleOnPress = async () => {
     const file = await handleUpload();
     onPressAction(file);
@@ -131,34 +143,28 @@ export const FileSelector: FunctionComponent<FileSelectorProps> = ({
 
   const attachmentLabel = isUndefined(upload) || upload === null ? subLabel : "Remove Attachment";
 
-  const animatedRef = useAnimatedRef();
-
-  const runOnUI = () => {
-    const measurement = measure(animatedRef);
-    if (measurement === null) {
-      return;
-    }
-    runOnJS(setLayout)(Math.floor(measurement.height));
-  };
-
   useEffect(() => {
-    runOnUI();
     scaleDownUI();
+
+    if (upload !== undefined && height <= 152 && paddingAnimated.value !== sh40) {
+      return cancelAnimation(paddingAnimated);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upload]);
 
   return (
     <Fragment>
       <TouchableOpacity onPress={handleOnPress} onPressIn={handleOnPress}>
-        <Animated.View style={defaultContainerStyle} ref={animatedRef}>
+        <Animated.View style={animatedStyle} ref={animatedRef}>
           <Icon {...defaultIconStyle} />
           <Text style={{ ...fs14RegGray1, ...labelStyle }}>{fileNameLabel}</Text>
           <Text style={fs10RegGray4}>{subLabel === undefined ? "" : attachmentLabel}</Text>
           {upload ? (
             <View style={alignSelfEnd}>
-              <TouchableOpacity onPress={() => setUpload(undefined)}>
+              <Pressable onPress={() => setUpload(undefined)}>
                 <Icon name="checkmark-done-circle" size={sw16} color={colorGreen._1} />
-              </TouchableOpacity>
+              </Pressable>
             </View>
           ) : null}
         </Animated.View>

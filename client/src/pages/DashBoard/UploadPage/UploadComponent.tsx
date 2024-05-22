@@ -1,4 +1,3 @@
-import { isUndefined } from "lodash";
 import { Fragment, FunctionComponent, useState } from "react";
 import { NativeSyntheticEvent, ScrollView, Text, TextInputChangeEventData, View, ViewStyle } from "react-native";
 import { DirectoryPickerResponse, DocumentPickerResponse, types } from "react-native-document-picker";
@@ -34,15 +33,17 @@ interface UploadComponentProps {
   dropDownSelection: IDropdownOptions<TCategoriesPlaylist>[];
   handleUpload: () => Promise<void>;
   loading: boolean | undefined;
+  progress: number;
   setUploadData: (value: IUploadFile) => void;
   uploadData: IUploadFile;
 }
 
 export const UploadComponent: FunctionComponent<UploadComponentProps> = ({
   disable,
-  loading,
   dropDownSelection,
   handleUpload,
+  loading,
+  progress,
   setUploadData,
   uploadData,
 }: UploadComponentProps) => {
@@ -102,12 +103,13 @@ export const UploadComponent: FunctionComponent<UploadComponentProps> = ({
       <View style={containerStyle}>
         <View style={{ ...flexRowSbSb, ...rowCenterVertical }}>
           <Text style={fs12BoldBlack2}>Add New Files</Text>
-          <Icon name="close-circle" size={sw24} />
+          <Icon name="close-circle" size={sw24} color={colorGray._3} />
         </View>
         <CustomSpacer space={sh12} />
         <FileSelector
           label={"Drag & Drop or choose file to upload"}
           onPressAction={handleUploadPoster}
+          value={uploadData.fileUrl}
           options={{ type: [types.images], allowMultiSelection: false }}
           subLabel="Select jpeg, png or jpg"
         />
@@ -115,6 +117,7 @@ export const UploadComponent: FunctionComponent<UploadComponentProps> = ({
         <FileSelector
           label={"Drag & Drop or choose file to upload"}
           onPressAction={handleUploadfile}
+          value={uploadData.fileUrl}
           options={{ type: [types.audio], allowMultiSelection: false }}
           subLabel="Select mp3, mp4 or wav"
         />
@@ -124,7 +127,7 @@ export const UploadComponent: FunctionComponent<UploadComponentProps> = ({
           spaceBottomLabel={sh6}
           spaceToTop={sh8}
           style={fs10RegGray4}
-          value={isUndefined(uploadData) ? "" : uploadData.title}
+          value={uploadData.title}
         />
         <CustomTextInput
           label={"Description"}
@@ -132,14 +135,14 @@ export const UploadComponent: FunctionComponent<UploadComponentProps> = ({
           spaceBottomLabel={sh6}
           spaceToTop={sh8}
           style={fs10RegGray4}
-          value={isUndefined(uploadData) ? "" : uploadData.description}
+          value={uploadData.description}
         />
         <View style={{ paddingHorizontal: sw8 }}>
           <DropdownPicker
             options={dropDownSelection}
             onSelect={handleSelect as (option: IDropdownOptions<TCategoriesPlaylist | unknown>) => void}
             label={"Category"}
-            selected={selectedOption}
+            selected={selectedOption === undefined ? undefined : selectedOption}
             spaceBottomLabel={sh8}
             labelTextStyle={fs12SemiBoldJett3}
             required={uploadData.fileUrl === null ? true : false}

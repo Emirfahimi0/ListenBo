@@ -1,7 +1,9 @@
 import { Fragment, FunctionComponent } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text } from "react-native";
 import { flexRowSbSb, sw2, sh12, fs14BoldBlack2, fs12BoldOrange2, flexChild, sw12 } from "../../styles";
 import { CustomSpacer } from "../spacer";
+import { isUndefined } from "lodash";
+import Animated, { BounceInUp, LightSpeedInRight } from "react-native-reanimated";
 
 interface ListItemsProps<T> {
   content?: (item: T) => JSX.Element;
@@ -20,7 +22,7 @@ export const ListItems: FunctionComponent<ListItemsProps<unknown>> = <T,>({
   isHorizontal,
 }: ListItemsProps<T>) => {
   const renderContent = (item: T) => {
-    return content === undefined ? <View /> : content(item);
+    return isUndefined(content) ? <View /> : content(item);
   };
   return (
     <Fragment>
@@ -29,25 +31,28 @@ export const ListItems: FunctionComponent<ListItemsProps<unknown>> = <T,>({
         <Text style={fs12BoldOrange2}> {rightLabel}</Text>
       </View>
       {isHorizontal === true ? (
-        <FlatList
+        <Animated.FlatList
+          entering={LightSpeedInRight.delay(500)}
           contentContainerStyle={flexChild}
           data={data}
-          horizontal={isHorizontal === undefined ? true : isHorizontal}
-          ItemSeparatorComponent={({}) => <CustomSpacer isHorizontal={isHorizontal === undefined ? true : isHorizontal} space={sw12} />}
+          horizontal={isUndefined(isHorizontal) ? undefined : isHorizontal}
+          ItemSeparatorComponent={({}) => <CustomSpacer isHorizontal={isUndefined(isHorizontal) ? undefined : isHorizontal} space={sw12} />}
           renderItem={({ item, index }) => {
             return <Fragment key={index}>{renderContent(item)}</Fragment>;
           }}
         />
       ) : (
         <Fragment>
-          {data.map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <CustomSpacer space={sh12} />
-                {renderContent(item)}
-              </Fragment>
-            );
-          })}
+          <Animated.View entering={BounceInUp.delay(500).springify(10)}>
+            {data.map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <CustomSpacer space={sh12} />
+                  {renderContent(item)}
+                </Fragment>
+              );
+            })}
+          </Animated.View>
         </Fragment>
       )}
     </Fragment>
