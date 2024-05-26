@@ -3,9 +3,11 @@ import { AuthFormTemplates } from "../templates";
 import { LANGUAGE } from "../constants";
 import { BottomSheetModalComponent, LabelLink } from "../components";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { createAccount, reVerifyAccountByEmail, verifyAccountByEmail } from "../network";
+import { catchAsyncError, createAccount, reVerifyAccountByEmail, verifyAccountByEmail } from "../network";
 import { Alert } from "react-native";
 import { newUserFormatter } from "../utils";
+import { useDispatch } from "react-redux";
+import { updateNotification } from "../store/global";
 
 export interface ISignUpProps {
   navigation: IStackNavigationProp;
@@ -27,6 +29,8 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
   const [currentStep, setCurrentStep] = useState<CurrentContentModal | undefined>("OTPEvent");
   const bottomSheetModalRef = useRef<BottomSheetModal | null>(null);
   const newUserRef = useRef<newUser | null>(null);
+
+  const dispatch = useDispatch();
 
   const showModal = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -66,7 +70,6 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
   };
 
   const handleVerificationEvent = async (token: string) => {
-    console.log("token", token);
     try {
       if (newUserRef === null) {
         return;
@@ -83,6 +86,8 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
         return false;
       }
     } catch (error) {
+      const errorMsg = catchAsyncError(error);
+      dispatch(updateNotification(errorMsg));
       Alert.alert(`unexpected error ${error}`);
       return false;
     }
@@ -102,11 +107,13 @@ export const SignUp: FunctionComponent<ISignUpProps> = ({ navigation }: ISignUpP
       }
       if (response.code === "error") {
         const errorFromServer = response.error as unknown;
-        return Alert.alert(`verfication failed ,${errorFromServer.status} `);
+        return Alert.alert(`verfication failed ,${errorFromServer.status}`);
       }
     } catch (error) {
-      return Alert.alert(`unexpected error ${error}`);
+      const errorMsg = catchAsyncError(error);
+      dispatch(updateNotification(errorMsg));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDifferentForm = () => {
